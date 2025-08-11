@@ -1,0 +1,161 @@
+@import '../styles/variables.css';
+
+.right-sidebar {
+  position: fixed;
+  top: 80px;
+  right: 0;
+  width: 60px;
+  background: rgba(248, 250, 252, 0.98);
+  backdrop-filter: blur(10px);
+  border-radius: var(--radius-lg) 0 0 var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  z-index: var(--z-dropdown);
+  transition: all var(--transition-normal) ease-out;
+  max-height: calc(100vh - 160px);
+  overflow: hidden;
+  border-left: 1px solid var(--color-border);
+}
+
+.right-sidebar.expanded {
+  width: 380px;
+  box-shadow: var(--shadow-xl);
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-md);
+  cursor: pointer;
+  user-select: none;
+  border-bottom: 1px solid var(--color-border);
+  transition: background-color var(--transition-fast);
+  min-height: 60px;
+  background: white;
+}
+
+.sidebar-header:hover {
+  background: var(--color-surface);
+}
+
+.sidebar-title {
+  font-weight: 600;
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+  display: none;
+}
+
+.right-sidebar.expanded .sidebar-title {
+  display: block;
+  flex: 1;
+}
+
+.sidebar-toggle {
+  font-weight: bold;
+  color: var(--color-primary);
+  font-size: var(--font-size-lg);
+  transition: transform var(--transition-fast);
+}
+
+.right-sidebar.expanded .sidebar-toggle {
+  transform: rotate(90deg);
+}
+
+.sidebar-content {
+  height: calc(100vh - 240px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0;
+  animation: slideIn var(--transition-normal) ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.sidebar-section {
+  margin-bottom: var(--spacing-md);
+}
+
+/* Override individual panel styles when in sidebar */
+.sidebar-content .statistics-panel,
+.sidebar-content .advanced-filter,
+.sidebar-content .distance-control,
+.sidebar-content .export-controls {
+  position: static;
+  width: 100%;
+  background: transparent;
+  backdrop-filter: none;
+  border-radius: 0;
+  box-shadow: none;
+  margin: 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* Special styling for Statistics Panel */
+.sidebar-content .statistics-panel {
+  background: white;
+}
+
+.sidebar-content .statistics-panel .panel-header {
+  background: white;
+  color: var(--color-text);
+}
+
+.sidebar-content .statistics-panel .panel-header:hover {
+  background: var(--color-surface);
+}
+
+.sidebar-content .statistics-panel:last-child,
+.sidebar-content .advanced-filter:last-child,
+.sidebar-content .distance-control:last-child,
+.sidebar-content .export-controls:last-child {
+  border-bottom: none;
+}
+
+/* Custom scrollbar for sidebar content */
+.sidebar-content::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sidebar-content::-webkit-scrollbar-track {
+  background: var(--color-surface);
+  border-radius: 2px;
+}
+
+.sidebar-content::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 2px;
+}
+
+.sidebar-content::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-muted);
+}
+
+@media (max-width: 768px) {
+  .right-sidebar {
+    top: auto;
+    bottom: 80px;
+    left: var(--spacing-sm);
+    right: var(--spacing-sm);
+    width: auto;
+    max-height: 50vh;
+    border-radius: var(--radius-lg);
+  }
+  
+  .right-sidebar.expanded {
+    width: auto;
+  }
+  
+  .sidebar-content {
+    height: auto;
+    max-height: calc(50vh - 80px);
+  }
+}

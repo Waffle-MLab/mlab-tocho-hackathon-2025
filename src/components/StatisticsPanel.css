@@ -1,0 +1,386 @@
+/* 
+ * ===================================
+ * STATISTICS PANEL
+ * ===================================
+ * 樹木データの統計情報を表示するパネル
+ * チャート・テーブル・サマリー機能を提供
+ */
+@import '../styles/variables.css';
+
+.statistics-panel {
+  position: fixed;
+  top: 80px;
+  right: var(--spacing-lg);
+  width: 320px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  z-index: var(--z-dropdown);
+  overflow: hidden;
+  transition: all var(--transition-normal) cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  max-height: calc(100vh - 200px);
+}
+
+.statistics-panel.expanded {
+  width: 400px;
+  box-shadow: var(--shadow-xl);
+}
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
+  cursor: pointer;
+  user-select: none;
+  border-bottom: 1px solid var(--color-border);
+  transition: background-color var(--transition-fast);
+}
+
+.panel-header:hover {
+  background: var(--color-surface);
+}
+
+.panel-icon {
+  font-size: var(--font-size-lg);
+}
+
+.panel-title {
+  font-weight: 600;
+  color: var(--color-primary);
+  font-size: var(--font-size-sm);
+}
+
+.quick-stats {
+  flex: 1;
+  text-align: right;
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}
+
+.panel-toggle {
+  font-weight: bold;
+  color: var(--color-primary);
+  font-size: var(--font-size-lg);
+  width: 20px;
+  text-align: center;
+}
+
+.panel-content {
+  padding: var(--spacing-md);
+  max-height: calc(100vh - 280px);
+  overflow-y: auto;
+  animation: slideDown var(--transition-normal) cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ビューコントロール */
+.view-controls {
+  display: flex;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
+}
+
+.view-button {
+  flex: 1;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-background);
+  color: var(--color-text);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-xs);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.view-button:hover {
+  border-color: var(--color-primary);
+  background: var(--color-surface);
+}
+
+.view-button.active {
+  background: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+}
+
+/* Chart Styles */
+.chart-container h4,
+.table-container h4,
+.current-stats h4 {
+  margin: 0 0 12px 0;
+  color: #2c5530;
+  font-size: 1em;
+  border-bottom: 2px solid #2c5530;
+  padding-bottom: 4px;
+}
+
+.chart {
+  display: flex;
+  height: 200px;
+  margin-bottom: 15px;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  padding: 10px;
+  background: white;
+}
+
+.chart-y-axis {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-right: 8px;
+  font-size: 0.7em;
+  color: #666;
+  width: 30px;
+}
+
+.chart-bars {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  padding: 0 5px;
+}
+
+.bar-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+
+.bar-group {
+  position: relative;
+  width: 100%;
+  height: 180px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.bar {
+  width: 45%;
+  border-radius: 2px 2px 0 0;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+}
+
+.healthy-bar {
+  background: linear-gradient(to top, var(--color-healthy), #4ade80);
+}
+
+.problem-bar {
+  background: linear-gradient(to top, var(--color-pest), #f87171);
+}
+
+.bar:hover {
+  opacity: 0.8;
+  transform: scaleY(1.05);
+}
+
+.bar-label {
+  margin-top: 5px;
+  font-size: 0.7em;
+  color: #666;
+  font-weight: 500;
+}
+
+.bar-label.current {
+  color: #2c5530;
+  font-weight: 600;
+}
+
+.chart-legend {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  font-size: 0.8em;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.legend-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+}
+
+.legend-color.healthy {
+  background: var(--color-healthy);
+}
+
+.legend-color.problem {
+  background: var(--color-pest);
+}
+
+/* Table Styles */
+.stats-table {
+  overflow-x: auto;
+  border-radius: 6px;
+  border: 1px solid #eee;
+  background: white;
+}
+
+.stats-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8em;
+}
+
+.stats-table th,
+.stats-table td {
+  padding: 8px 6px;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
+
+.stats-table th {
+  background: #f8f9fa;
+  font-weight: 600;
+  color: #2c5530;
+}
+
+.stats-table tr:hover {
+  background: rgba(44, 85, 48, 0.05);
+}
+
+.stats-table tr.current-year {
+  background: rgba(44, 85, 48, 0.1);
+  font-weight: 600;
+}
+
+.year-cell {
+  font-weight: 600;
+  color: #2c5530;
+}
+
+.healthy {
+  color: var(--color-healthy);
+}
+
+.observation {
+  color: var(--color-observation);
+}
+
+.pest {
+  color: var(--color-pest);
+}
+
+.withering {
+  color: var(--color-withering);
+}
+
+.dead {
+  color: var(--color-dead);
+}
+
+.problem-rate {
+  font-weight: 600;
+  color: var(--color-pest);
+}
+
+/* Current Stats */
+.current-stats {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid #eee;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+}
+
+.stat-item {
+  padding: 10px;
+  background: white;
+  border-radius: 6px;
+  border: 1px solid #eee;
+  text-align: center;
+}
+
+.stat-item.healthy {
+  border-color: #22c55e;
+  background: rgba(34, 197, 94, 0.05);
+}
+
+.stat-item.problem {
+  border-color: #ef4444;
+  background: rgba(239, 68, 68, 0.05);
+}
+
+.stat-item.rate {
+  border-color: #f59e0b;
+  background: rgba(245, 158, 11, 0.05);
+}
+
+.stat-label {
+  display: block;
+  font-size: 0.75em;
+  color: #666;
+  margin-bottom: 4px;
+}
+
+.stat-value {
+  display: block;
+  font-size: 1.2em;
+  font-weight: 600;
+  color: #2c5530;
+}
+
+@media (max-width: 768px) {
+  .statistics-panel {
+    position: fixed;
+    top: 60px;
+    left: 10px;
+    right: 10px;
+    width: auto;
+    max-height: 50vh;
+  }
+  
+  .statistics-panel.expanded {
+    width: auto;
+  }
+  
+  .panel-content {
+    max-height: calc(50vh - 80px);
+  }
+  
+  .chart {
+    height: 150px;
+  }
+  
+  .bar-group {
+    height: 130px;
+  }
+  
+  .stats-table {
+    font-size: 0.7em;
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}

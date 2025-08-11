@@ -1,0 +1,171 @@
+/* 
+ * ===================================
+ * DESIGN SYSTEM VARIABLES
+ * ===================================
+ * This file contains all design tokens for the application.
+ * Modify these values to change the entire theme.
+ */
+
+:root {
+  /* ===================
+   * PRIMARY BRAND COLORS
+   * =================== */
+  --color-primary: #1e293b;
+  /* メインブランドカラー（ヘッダー、アクセント） */
+  --color-primary-light: #28374f;
+  /* ホバー状態用の明るいバリエーション */
+  --color-primary-dark: #161e2c;
+  /* プレス状態用の暗いバリエーション */
+
+  /* ===================
+   * TREE CONDITION COLORS
+   * ===================
+   * 樹木の健康状態を表す色（データビジュアライゼーション用）
+   */
+  --color-healthy: #22c55e;
+  /* 健全な樹木（緑色） */
+  --color-observation: #f59e0b;
+  /* 要観察（オレンジ色） */
+  --color-pest: #ef4444;
+  /* 虫害（赤色） */
+  --color-withering: #6b7280;
+  /* 立ち枯れ（グレー） */
+  --color-dead: #4b5563;
+  /* 枯死（濃いグレー） */
+  --color-branch-broken: #f97316;
+  /* 枝折れ（オレンジレッド） */
+  --color-default: #3b82f6;
+  /* デフォルト状態（青色） */
+
+  /* ===================
+   * UI FOUNDATION COLORS
+   * =================== */
+  --color-background: #ffffff;
+  /* メイン背景色 */
+  --color-surface: #f8fafc;
+  /* カード・パネル背景色 */
+  --color-border: #e2e8f0;
+  /* ボーダー色 */
+  --color-text: #1e293b;
+  /* メインテキスト色 */
+  --color-text-secondary: #64748b;
+  /* セカンダリテキスト色 */
+  --color-text-muted: #94a3b8;
+  /* 薄いテキスト色 */
+
+  /* ===================
+   * STATUS COLORS
+   * =================== */
+  --color-error: #ef4444;
+  /* エラー状態 */
+  --color-success: #10b981;
+  /* 成功状態 */
+  --color-warning: #f59e0b;
+  /* 警告状態 */
+
+  /* ===================
+   * ELEVATION SHADOWS
+   * ===================
+   * 要素の階層を表現するシャドウ
+   */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  /* 軽いカードの影 */
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  /* 標準カードの影 */
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  /* ドロップダウン・モーダルの影 */
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  /* 最前面要素の影 */
+
+  /* ===================
+   * BORDER RADIUS
+   * ===================
+   * UI要素の角丸設定
+   */
+  --radius-sm: 0.125rem;
+  /* 2px - 小さなボタン・バッジ */
+  --radius-md: 0.375rem;
+  /* 6px - 標準ボタン・インプット */
+  --radius-lg: 0.5rem;
+  /* 8px - カード・パネル */
+  --radius-xl: 0.75rem;
+  /* 12px - 大きなコンテナ */
+
+  /* ===================
+   * SPACING SCALE
+   * ===================
+   * 一貫したスペーシングシステム
+   */
+  --spacing-xs: 0.25rem;
+  /* 4px - アイコン間のギャップ */
+  --spacing-sm: 0.5rem;
+  /* 8px - 小さな要素間のマージン */
+  --spacing-md: 1rem;
+  /* 16px - 標準的な要素間のマージン */
+  --spacing-lg: 1.5rem;
+  /* 24px - セクション間のマージン */
+  --spacing-xl: 2rem;
+  /* 32px - 大きなセクション間のマージン */
+
+  /* ===================
+   * TYPOGRAPHY SCALE
+   * ===================
+   * レスポンシブ対応のフォントサイズ
+   */
+  --font-size-xs: 0.75rem;
+  /* 12px - キャプション・バッジ */
+  --font-size-sm: 0.875rem;
+  /* 14px - 小さなボタン・ラベル */
+  --font-size-base: 1rem;
+  /* 16px - 本文テキスト */
+  --font-size-lg: 1.125rem;
+  /* 18px - サブタイトル */
+  --font-size-xl: 1.25rem;
+  /* 20px - タイトル */
+  --font-size-2xl: 1.5rem;
+  /* 24px - 大きなタイトル */
+
+  /* ===================
+   * Z-INDEX LAYERS
+   * ===================
+   * UI階層管理のためのz-index値
+   */
+  --z-dropdown: 1000;
+  /* ドロップダウンメニュー */
+  --z-sticky: 1020;
+  /* スティッキーヘッダー */
+  --z-fixed: 1030;
+  /* 固定要素（サイドバー等） */
+  --z-modal-backdrop: 1040;
+  /* モーダル背景 */
+  --z-modal: 1050;
+  /* モーダルコンテンツ */
+  --z-popover: 1060;
+  /* ポップオーバー */
+  --z-tooltip: 1070;
+  /* ツールチップ（最前面） */
+
+  /* ===================
+   * ANIMATION TIMING
+   * ===================
+   * 一貫したアニメーション速度
+   */
+  --transition-fast: 0.15s ease-in-out;
+  /* ボタンホバー等の高速アニメーション */
+  --transition-normal: 0.3s ease-in-out;
+  /* 標準的なUI遷移 */
+  --transition-slow: 0.5s ease-in-out;
+  /* 大きな状態変更・ページ遷移 */
+}
+
+/* Dark mode variables (future use) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: #0f172a;
+    --color-surface: #1e293b;
+    --color-border: #334155;
+    --color-text: #f1f5f9;
+    --color-text-secondary: #cbd5e1;
+    --color-text-muted: #94a3b8;
+  }
+}

@@ -1,0 +1,184 @@
+/* 
+ * ===================================
+ * 樹木詳細パネル
+ * ===================================
+ * 樹木をクリックした時に左からスライドインして
+ * 詳細情報を表示するサイドパネル
+ */
+@import '../styles/variables.css';
+
+.tree-detail-panel {
+  position: fixed;
+  top: 70px;
+  /* Header height offset */
+  left: -420px;
+  width: 400px;
+  height: calc(100vh - 70px - 110px);
+  /* Account for header and footer */
+  background: var(--color-background);
+  box-shadow: var(--shadow-xl);
+  transition: all var(--transition-slow) cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  z-index: var(--z-modal);
+  overflow-y: auto;
+  backdrop-filter: blur(10px);
+}
+
+.tree-detail-panel.open {
+  left: 0;
+  box-shadow: var(--shadow-xl);
+}
+
+/* Backdrop overlay */
+/* パネル背景オーバーレイ */
+.tree-detail-panel::before {
+  content: '';
+  position: fixed;
+  top: 60px;
+  left: 400px;
+  width: calc(100vw - 400px);
+  height: calc(100vh - 80px - 80px);
+  background: rgba(0, 0, 0, 0);
+  pointer-events: none;
+  transition: background var(--transition-slow) ease;
+  z-index: -1;
+}
+
+.tree-detail-panel.open::before {
+  background: rgba(0, 0, 0, 0.3);
+  pointer-events: all;
+}
+
+/* パネルヘッダー */
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-lg);
+  border-bottom: 1px solid var(--color-border);
+  background: var(--color-primary);
+  color: white;
+}
+
+.panel-header h2 {
+  margin: 0;
+  font-size: var(--font-size-lg);
+}
+
+.close-button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: var(--font-size-lg);
+  cursor: pointer;
+  padding: var(--spacing-xs);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition-fast);
+}
+
+.close-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.panel-content {
+  padding: var(--spacing-lg);
+}
+
+/* 詳細情報セクション */
+.detail-section {
+  margin-bottom: var(--spacing-xl);
+}
+
+.detail-section h3 {
+  margin: 0 0 var(--spacing-md) 0;
+  padding-bottom: var(--spacing-sm);
+  border-bottom: 2px solid var(--color-primary);
+  color: var(--color-primary);
+  font-size: var(--font-size-lg);
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-sm) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.detail-item:last-child {
+  border-bottom: none;
+}
+
+.detail-item label {
+  font-weight: 600;
+  color: var(--color-text);
+  min-width: 100px;
+}
+
+.detail-item span {
+  color: var(--color-text-secondary);
+  text-align: right;
+  flex: 1;
+  margin-left: var(--spacing-sm);
+}
+
+/* 樹木状態別スタイリング */
+.condition-健全 {
+  color: var(--color-healthy);
+  font-weight: 600;
+}
+
+.condition-要観察 {
+  color: var(--color-observation);
+  font-weight: 600;
+}
+
+.condition-虫害 {
+  color: var(--color-pest);
+  font-weight: 600;
+}
+
+.condition-立ち枯れ,
+.condition-枯死 {
+  color: var(--color-withering);
+  font-weight: 600;
+}
+
+.condition-枝折れ {
+  color: var(--color-branch-broken);
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .tree-detail-panel {
+    width: 100%;
+    left: -100%;
+    top: 50px;
+    height: calc(100vh - 80px - 80px);
+    /* Header + footer for mobile */
+  }
+
+  .tree-detail-panel.open {
+    left: 0;
+  }
+
+  .detail-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  .detail-item span {
+    margin-left: 0;
+    text-align: left;
+  }
+
+  .tree-detail-panel::before {
+    top: 50px;
+    height: calc(100vh - 80px - 80px);
+  }
+}

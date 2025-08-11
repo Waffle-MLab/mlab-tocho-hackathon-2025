@@ -1,0 +1,66 @@
+@import './styles/variables.css';
+
+.App {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: var(--color-background);
+  color: var(--color-text);
+}
+
+.App-header {
+  background-color: var(--color-primary);
+  padding: var(--spacing-sm) var(--spacing-md);
+  color: white;
+  flex-shrink: 0;
+  box-shadow: var(--shadow-md);
+  z-index: var(--z-fixed);
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.App-header h1 {
+  margin: 0;
+  font-size: var(--font-size-xl);
+  font-weight: 600;
+}
+
+.status-message {
+  text-align: center;
+  padding: var(--spacing-xs) 0;
+  font-size: var(--font-size-sm);
+  opacity: 0.9;
+}
+
+.status-message.error {
+  color: var(--color-error);
+}
+
+.App-main {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+@media (max-width: 768px) {
+  .App-header {
+    padding: var(--spacing-sm);
+  }
+
+  .header-content {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    align-items: flex-start;
+  }
+
+  .App-header h1 {
+    font-size: var(--font-size-lg);
+  }
+}

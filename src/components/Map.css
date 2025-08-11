@@ -1,0 +1,21 @@
+/* 
+ * ===================================
+ * LEAFLET MAP CONTAINER STYLES
+ * ===================================
+ * Leafletマップコンテナのスタイル設定
+ */
+@import '../styles/variables.css';
+
+.map-container {
+  height: 100%;
+  width: 100%;
+  border: none;
+  border-radius: 0;
+  background-color: var(--color-surface);
+}
+
+.map-container .leaflet-container {
+  height: 100%;
+  width: 100%;
+  border-radius: 0;
+}

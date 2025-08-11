@@ -1,0 +1,32 @@
+/* 
+ * ===================================
+ * LEAFLET マーカー カスタマイゼーション
+ * ===================================
+ * Leafletのデフォルトマーカースタイルを上書きして
+ * 透明な背景とホバーエフェクトを適用
+ */
+@import '../styles/variables.css';
+
+/* マーカーの基本スタイル */
+.custom-tree-marker {
+  background: transparent !important;
+  border: none !important;
+}
+
+/* マーカーホバー時のアニメーション */
+.custom-tree-marker:hover {
+  transform: scale(1.1);
+  z-index: var(--z-dropdown) !important;
+  transition: transform var(--transition-fast);
+}
+
+/* マーカー内のコンテンツスタイル */
+.custom-tree-marker div {
+  cursor: pointer;
+  transition: transform var(--transition-fast);
+}
+
+/* マーカー内のコンテンツホバー時 */
+.custom-tree-marker div:hover {
+  transform: scale(1.1);
+}
