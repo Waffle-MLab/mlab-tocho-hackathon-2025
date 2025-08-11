@@ -3,7 +3,7 @@ import { TreeMarkerData, JindaiTreeMarkerData, TimeSeriesTreeMarkerData, DataSou
 
 export const loadTokyoTreeData = async (): Promise<TreeMarkerData[]> => {
   try {
-    const response = await fetch('/src/data/tokyo_gairoju.csv')
+    const response = await fetch('/data/tokyo_gairoju.csv')
     const csvText = await response.text()
     
     return new Promise((resolve, reject) => {
@@ -60,7 +60,7 @@ export const loadTokyoTreeData = async (): Promise<TreeMarkerData[]> => {
 
 export const loadJindaiTreeData = async (): Promise<JindaiTreeMarkerData[]> => {
   try {
-    const response = await fetch('/src/data/jindai_trees_demo.csv')
+    const response = await fetch('/data/jindai_trees_demo.csv')
     const csvText = await response.text()
     
     return new Promise((resolve, reject) => {
@@ -113,7 +113,7 @@ export const loadJindaiTreeData = async (): Promise<JindaiTreeMarkerData[]> => {
 
 export const loadTimeSeriesTreeData = async (): Promise<TimeSeriesTreeMarkerData[]> => {
   try {
-    const response = await fetch('/src/data/jindai_trees_2015_2025.csv')
+    const response = await fetch('/data/jindai_trees_2015_2025.csv')
     const csvText = await response.text()
     
     return new Promise((resolve, reject) => {
