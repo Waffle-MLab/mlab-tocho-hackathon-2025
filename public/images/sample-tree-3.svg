@@ -1,0 +1,14 @@
+<svg width="150" height="150" viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg">
+  <rect width="150" height="150" fill="#fff8dc"/>
+  <!-- 樹幹 -->
+  <rect x="70" y="85" width="10" height="55" fill="#8B4513"/>
+  <!-- 葉っぱ部分（剪定後） -->
+  <circle cx="75" cy="65" r="25" fill="#228B22"/>
+  <circle cx="65" cy="55" r="18" fill="#32CD32"/>
+  <circle cx="85" cy="55" r="18" fill="#32CD32"/>
+  <!-- 切り跡 -->
+  <line x1="60" y1="75" x2="65" y2="70" stroke="#8B4513" stroke-width="2"/>
+  <line x1="90" y1="75" x2="85" y2="70" stroke="#8B4513" stroke-width="2"/>
+  <!-- ラベル -->
+  <text x="75" y="20" text-anchor="middle" font-family="Arial" font-size="12" fill="#2d5016">剪定後</text>
+</svg>

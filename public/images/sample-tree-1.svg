@@ -1,0 +1,12 @@
+<svg width="150" height="150" viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg">
+  <rect width="150" height="150" fill="#e8f5e8"/>
+  <!-- 樹幹 -->
+  <rect x="70" y="100" width="10" height="40" fill="#8B4513"/>
+  <!-- 葉っぱ部分 -->
+  <circle cx="75" cy="80" r="25" fill="#228B22"/>
+  <circle cx="65" cy="70" r="20" fill="#32CD32"/>
+  <circle cx="85" cy="70" r="20" fill="#32CD32"/>
+  <circle cx="75" cy="60" r="18" fill="#7CFC00"/>
+  <!-- ラベル -->
+  <text x="75" y="20" text-anchor="middle" font-family="Arial" font-size="12" fill="#2d5016">植樹後</text>
+</svg>

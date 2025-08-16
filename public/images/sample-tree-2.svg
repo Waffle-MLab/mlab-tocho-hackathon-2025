@@ -1,0 +1,12 @@
+<svg width="150" height="150" viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg">
+  <rect width="150" height="150" fill="#f0f8ff"/>
+  <!-- 樹幹 -->
+  <rect x="70" y="90" width="10" height="50" fill="#8B4513"/>
+  <!-- 葉っぱ部分 -->
+  <circle cx="75" cy="70" r="30" fill="#228B22"/>
+  <circle cx="60" cy="60" r="22" fill="#32CD32"/>
+  <circle cx="90" cy="60" r="22" fill="#32CD32"/>
+  <circle cx="75" cy="50" r="20" fill="#7CFC00"/>
+  <!-- ラベル -->
+  <text x="75" y="20" text-anchor="middle" font-family="Arial" font-size="12" fill="#2d5016">成長中</text>
+</svg>
