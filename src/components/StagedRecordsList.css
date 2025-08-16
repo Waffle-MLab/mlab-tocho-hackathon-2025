@@ -1,0 +1,108 @@
+
+.staged-records-list-container {
+  margin-top: 20px;
+}
+
+.staged-records-list-container h4 {
+  margin-top: 0;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
+  margin-bottom: 15px;
+}
+
+.tree-group {
+  margin-bottom: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 15px;
+}
+
+.tree-group-header {
+  margin: -15px -15px 10px -15px;
+  padding: 10px 15px;
+  background-color: #e9ecef;
+  border-bottom: 1px solid #e0e0e0;
+  border-radius: 8px 8px 0 0;
+  font-size: 1em;
+}
+
+.empty-list-message {
+  color: #666;
+  text-align: center;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 4px;
+}
+
+.staged-records-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.staged-record-item {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 15px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.staged-record-item:last-child {
+  margin-bottom: 0;
+}
+
+.record-info {
+  flex-grow: 1;
+  margin-right: 10px;
+}
+
+.record-info .tree-id {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.record-info .record-content {
+  margin: 0;
+  white-space: pre-wrap; /* Preserve whitespace and newlines */
+  word-break: break-word;
+}
+
+.record-actions {
+  display: flex;
+  align-items: center;
+}
+
+.record-actions .edit-button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 12px;
+  margin-right: 5px;
+}
+
+.record-actions .edit-button:hover {
+  background-color: #0056b3;
+}
+
+.record-actions .delete-button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.record-actions .delete-button:hover {
+  background-color: #c82333;
+}
