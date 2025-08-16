@@ -17,14 +17,14 @@ interface MapProps {
   zoom?: number
   className?: string
   children?: ReactNode
-  onMapClick?: () => void
+  onMapClick?: (e: L.LeafletMouseEvent) => void
   flyToLocation?: [number, number] | null
   onViewportChange?: (bounds: L.LatLngBounds) => void
 }
 
 // Component to handle map click events and fly-to functionality
 const MapController = ({ onMapClick, flyToLocation, onViewportChange }: { 
-  onMapClick?: () => void, 
+  onMapClick?: (e: L.LeafletMouseEvent) => void, 
   flyToLocation?: [number, number] | null,
   onViewportChange?: (bounds: L.LatLngBounds) => void
 }) => {
@@ -36,9 +36,9 @@ const MapController = ({ onMapClick, flyToLocation, onViewportChange }: {
   }, [map])
 
   useEffect(() => {
-    const handleClick = () => {
+    const handleClick = (e: L.LeafletMouseEvent) => {
       if (onMapClick) {
-        onMapClick()
+        onMapClick(e)
       }
     }
 
