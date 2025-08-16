@@ -1,0 +1,19 @@
+
+.add-record-page-main {
+  display: flex;
+  flex-direction: row;
+  height: calc(100vh - 60px); /* 60px is the assumed height of the header */
+}
+
+.map-container {
+  flex-grow: 1;
+  height: 100%;
+}
+
+.sidebar {
+  width: 350px;
+  padding: 20px;
+  background-color: #f0f2f5;
+  overflow-y: auto;
+  box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+}
