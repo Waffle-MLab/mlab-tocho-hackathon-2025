@@ -9,33 +9,6 @@
   color: var(--color-text);
 }
 
-.App-header {
-  background: linear-gradient(135deg, var(--color-main), var(--color-main-dark));
-  padding: var(--space-sm) var(--space-md);
-  color: white;
-  flex-shrink: 0;
-  box-shadow: var(--shadow-md), 0 4px 12px rgba(0, 0, 0, 0.15);
-  z-index: var(--z-fixed);
-  height: var(--header-height);
-  box-sizing: border-box;
-  display: flex;
-  align-items: center;
-}
-
-.header-content {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.App-header h1 {
-  margin: 0;
-  font-size: var(--font-xl);
-  font-weight: 600;
-}
-
 .status-message {
   text-align: center;
   padding: var(--space-xs) 0;
@@ -53,20 +26,4 @@
   overflow: hidden;
   margin-top: 0;
   padding-top: 0;
-}
-
-@media (max-width: 768px) {
-  .App-header {
-    padding: var(--space-sm);
-  }
-
-  .header-content {
-    flex-direction: column;
-    gap: var(--space-sm);
-    align-items: flex-start;
-  }
-
-  .App-header h1 {
-    font-size: var(--font-lg);
-  }
 }

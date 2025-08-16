@@ -3,6 +3,7 @@ import { useState, useCallback, useEffect } from 'react';
 import L from 'leaflet';
 import { Marker } from 'react-leaflet';
 
+import Header from '../components/Header';
 import Map from '../components/Map';
 import RegisterForm from '../components/RegisterForm';
 import StagedTreesList from '../components/StagedTreesList';
@@ -124,11 +125,7 @@ function RegisterPage() {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <div className="header-content">
-          <h1>樹木データの登録</h1>
-        </div>
-      </header>
+      <Header title="樹木データの登録" />
       <main className="App-main register-page-main">
         <Map
           className="map-container"
