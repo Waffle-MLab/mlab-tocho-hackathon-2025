@@ -1,26 +1,8 @@
-/**
- * ===================================
- * なら枯れ・松枯れ情報マップ アプリケーション
- * ===================================
- * 
- * 【機能概要】
- * - 時系列樹木データの可視化（2015-2025年）
- * - 病気クラスタリング分析と表示
- * - インタラクティブな地図操作
- * - 統計情報とデータエクスポート
- * 
- * 【主要コンポーネント】
- * - Map: Leaflet地図コンテナ
- * - RightSidebar: 統合制御パネル
- * - YearSelector: 年代選択・アニメーション制御
- * - TreeMarkers: 樹木マーカー表示
- * - DiseaseCluster: 病気クラスター可視化
- */
-
 import { useState, useEffect, useMemo, useCallback } from 'react'
 import '../App.css'
 
 // === CORE COMPONENTS ===
+import Header from '../components/Header'
 import Map from '../components/Map'
 import RightSidebar from '../components/RightSidebar'
 import YearSelector from '../components/YearSelector'
@@ -188,13 +170,9 @@ function ViewPage() {
 
   return (
     <div className="App">
-      <header className="App-header">
-        <div className="header-content">
-          <h1>ナラ枯れ・マツ枯れ情報マップ</h1>
-        </div>
-        {loading && <div className="status-message">データ読み込み中...</div>}
-        {error && <div className="status-message error">{error}</div>}
-      </header>
+      <Header title="ナラ枯れ・マツ枯れ情報マップ" />
+      {loading && <div className="status-message">データ読み込み中...</div>}
+      {error && <div className="status-message error">{error}</div>}
       <main className="App-main">
         <Map
           className="map-container"
@@ -212,8 +190,7 @@ function ViewPage() {
                 selectedTree={selectedTimeSeriesTree}
               />
               {showClusters && <SVGClusterOverlay clusters={clusters} year={selectedYear} overlapThreshold={overlapThreshold} />}
-            </>
-          )}
+            </>)}
         </Map>
         <RightSidebar
           trees={advancedFilteredTrees.length > 0 ? advancedFilteredTrees : timeSeriesTrees}
