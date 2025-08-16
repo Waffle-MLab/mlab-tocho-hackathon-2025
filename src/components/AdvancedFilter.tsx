@@ -20,10 +20,10 @@ interface AdvancedFilterProps {
   onToggleProblematicFilter?: (show: boolean) => void
 }
 
-const AdvancedFilter = ({ 
-  trees, 
-  availableYears, 
-  onFilterChange, 
+const AdvancedFilter = ({
+  trees,
+  availableYears,
+  onFilterChange,
   showClusters = true,
   onToggleClusters,
   showOnlyProblematicTrees = false,
@@ -42,12 +42,12 @@ const AdvancedFilter = ({
   const { uniqueSpecies, uniqueConditions } = useMemo(() => {
     const species = new Set<string>()
     const conditions = new Set<string>()
-    
+
     trees.forEach(tree => {
       if (tree.species) species.add(tree.species)
       if (tree.condition) conditions.add(tree.condition)
     })
-    
+
     return {
       uniqueSpecies: Array.from(species).sort(),
       uniqueConditions: Array.from(conditions).sort()
@@ -69,7 +69,7 @@ const AdvancedFilter = ({
     }
 
     // Year range filter
-    filtered = filtered.filter(tree => 
+    filtered = filtered.filter(tree =>
       tree.year >= settings.yearRange[0] && tree.year <= settings.yearRange[1]
     )
 
@@ -77,8 +77,8 @@ const AdvancedFilter = ({
     if (settings.showHealthyOnly) {
       filtered = filtered.filter(tree => tree.condition === '健全')
     } else if (settings.showProblematicOnly) {
-      filtered = filtered.filter(tree => 
-        tree.condition === '枯死' || 
+      filtered = filtered.filter(tree =>
+        tree.condition === '枯死' ||
         tree.condition === '立ち枯れ' ||
         tree.condition === '虫害'
       )
@@ -88,10 +88,10 @@ const AdvancedFilter = ({
   }
 
   const handleSpeciesChange = (species: string, checked: boolean) => {
-    const newSpecies = checked 
+    const newSpecies = checked
       ? [...filterSettings.species, species]
       : filterSettings.species.filter(s => s !== species)
-    
+
     const newSettings = { ...filterSettings, species: newSpecies }
     setFilterSettings(newSettings)
     applyFilters(newSettings)
@@ -101,7 +101,7 @@ const AdvancedFilter = ({
     const newConditions = checked
       ? [...filterSettings.conditions, condition]
       : filterSettings.conditions.filter(c => c !== condition)
-    
+
     const newSettings = { ...filterSettings, conditions: newConditions }
     setFilterSettings(newSettings)
     applyFilters(newSettings)
@@ -120,10 +120,10 @@ const AdvancedFilter = ({
   }
 
   const getActiveFilterCount = () => {
-    return filterSettings.species.length + 
-           filterSettings.conditions.length + 
-           (filterSettings.showHealthyOnly ? 1 : 0) + 
-           (filterSettings.showProblematicOnly ? 1 : 0)
+    return filterSettings.species.length +
+      filterSettings.conditions.length +
+      (filterSettings.showHealthyOnly ? 1 : 0) +
+      (filterSettings.showProblematicOnly ? 1 : 0)
   }
 
   return (
@@ -248,8 +248,8 @@ const AdvancedFilter = ({
                   type="checkbox"
                   checked={filterSettings.showHealthyOnly}
                   onChange={(e) => {
-                    const newSettings = { 
-                      ...filterSettings, 
+                    const newSettings = {
+                      ...filterSettings,
                       showHealthyOnly: e.target.checked,
                       showProblematicOnly: e.target.checked ? false : filterSettings.showProblematicOnly
                     }
@@ -264,8 +264,8 @@ const AdvancedFilter = ({
                   type="checkbox"
                   checked={filterSettings.showProblematicOnly}
                   onChange={(e) => {
-                    const newSettings = { 
-                      ...filterSettings, 
+                    const newSettings = {
+                      ...filterSettings,
                       showProblematicOnly: e.target.checked,
                       showHealthyOnly: e.target.checked ? false : filterSettings.showHealthyOnly
                     }

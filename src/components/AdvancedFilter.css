@@ -1,9 +1,10 @@
 @import '../styles/variables.css';
+@import '../styles/design-patterns.css';
 
 .advanced-filter {
   position: fixed;
   top: 140px;
-  right: var(--spacing-lg);
+  right: var(--space-lg);
   width: 320px;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
@@ -22,8 +23,8 @@
 .filter-header {
   display: flex;
   align-items: center;
-  gap: var(--spacing-sm);
-  padding: var(--spacing-sm) var(--spacing-md);
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
   cursor: pointer;
   user-select: none;
   border-bottom: 1px solid var(--color-border);
@@ -36,20 +37,21 @@
 }
 
 .filter-icon {
-  font-size: var(--font-size-lg);
+  font-size: var(--font-lg);
 }
 
-.filter-title {
+.filter-title,
+.panel-title {
   font-weight: 600;
-  color: var(--color-primary);
-  font-size: var(--font-size-sm);
+  color: var(--color-main);
+  font-size: var(--font-sm);
 }
 
 .filter-count {
   background: var(--color-error);
   color: white;
-  font-size: var(--font-size-xs);
-  padding: var(--spacing-xs) 6px;
+  font-size: var(--font-xs);
+  padding: var(--space-xs) 6px;
   border-radius: 10px;
   min-width: 18px;
   text-align: center;
@@ -58,14 +60,14 @@
 
 .filter-toggle {
   font-weight: bold;
-  color: var(--color-primary);
-  font-size: var(--font-size-lg);
+  color: var(--color-main);
+  font-size: var(--font-lg);
   width: 20px;
   text-align: center;
 }
 
 .filter-content {
-  padding: var(--spacing-md);
+  padding: var(--space-md);
   max-height: calc(100vh - 300px);
   overflow-y: auto;
   animation: slideDown var(--transition-normal) cubic-bezier(0.25, 0.46, 0.45, 0.94);
@@ -92,15 +94,15 @@
 .filter-actions {
   display: flex;
   justify-content: flex-end;
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--space-lg);
 }
 
 .reset-button {
-  padding: 6px var(--spacing-md);
+  padding: 6px var(--space-md);
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-sm);
   cursor: pointer;
   transition: all var(--transition-fast);
 }
@@ -112,14 +114,14 @@
 
 /* Filter Sections */
 .filter-section {
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--space-lg);
 }
 
 .filter-section h4 {
-  margin: 0 0 var(--spacing-sm) 0;
-  color: var(--color-primary);
-  font-size: var(--font-size-sm);
-  padding-bottom: var(--spacing-xs);
+  margin: 0 0 var(--space-sm) 0;
+  color: var(--color-main);
+  font-size: var(--font-sm);
+  padding-bottom: var(--space-xs);
   border-bottom: 1px solid var(--color-border);
 }
 
@@ -127,16 +129,16 @@
 .checkbox-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: var(--spacing-sm);
+  gap: var(--space-sm);
 }
 
 .checkbox-item {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: var(--font-size-sm);
+  font-size: var(--font-sm);
   cursor: pointer;
-  padding: var(--spacing-xs) 6px;
+  padding: var(--space-xs) 6px;
   border-radius: var(--radius-md);
   transition: background-color var(--transition-fast);
 }
@@ -153,7 +155,7 @@
 .display-controls {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-sm);
+  gap: var(--space-sm);
 }
 
 /* Condition-specific styling */
@@ -186,7 +188,7 @@
 /* Range Slider */
 .range-slider {
   position: relative;
-  padding: var(--spacing-sm) 0;
+  padding: var(--space-sm) 0;
 }
 
 .range-input {
@@ -196,9 +198,9 @@
   background: var(--color-border);
   outline: none;
   appearance: none;
-  margin-bottom: var(--spacing-xs);
+  margin-bottom: var(--space-xs);
   position: absolute;
-  top: var(--spacing-sm);
+  top: var(--space-sm);
 }
 
 .range-input:first-of-type {
@@ -214,7 +216,7 @@
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: var(--color-primary);
+  background: var(--color-main);
   cursor: pointer;
   box-shadow: var(--shadow-sm);
   position: relative;
@@ -225,7 +227,7 @@
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: var(--color-primary);
+  background: var(--color-main);
   cursor: pointer;
   border: none;
   box-shadow: var(--shadow-sm);
@@ -235,7 +237,7 @@
   display: flex;
   justify-content: space-between;
   margin-top: 25px;
-  font-size: var(--font-size-sm);
+  font-size: var(--font-sm);
   color: var(--color-text-secondary);
   font-weight: 500;
 }
@@ -244,18 +246,18 @@
 .quick-filters {
   display: flex;
   flex-direction: column;
-  gap: var(--spacing-sm);
+  gap: var(--space-sm);
 }
 
 .quick-filters .checkbox-item {
-  padding: var(--spacing-sm) var(--spacing-sm);
+  padding: var(--space-sm) var(--space-sm);
   border: 1px solid var(--color-border);
   border-radius: 6px;
   background: var(--color-background);
 }
 
 .quick-filters .checkbox-item:hover {
-  border-color: var(--color-primary);
+  border-color: var(--color-main);
   background: rgba(44, 85, 48, 0.05);
 }
 
@@ -273,8 +275,8 @@
   .advanced-filter {
     top: auto;
     bottom: 500px;
-    left: var(--spacing-sm);
-    right: var(--spacing-sm);
+    left: var(--space-sm);
+    right: var(--space-sm);
     width: auto;
     max-height: 40vh;
   }

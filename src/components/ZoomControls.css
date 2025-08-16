@@ -12,17 +12,17 @@
 }
 
 .zoom-controls.sidebar-expanded {
-  right: 400px;
+  right: 350px;
 }
 
 .zoom-button {
   width: 40px;
   height: 40px;
   background: white;
-  border: 2px solid var(--color-primary);
+  border: 2px solid var(--color-main);
   border-radius: var(--radius-md);
-  color: var(--color-primary);
-  font-size: var(--font-size-lg);
+  color: var(--color-main);
+  font-size: var(--font-lg);
   font-weight: bold;
   cursor: pointer;
   transition: all var(--transition-fast);
@@ -33,9 +33,9 @@
 }
 
 .zoom-button:hover {
-  background: var(--color-primary);
+  background: var(--color-main);
   color: white;
-  border-color: var(--color-primary);
+  border-color: var(--color-main);
   box-shadow: var(--shadow-md);
   transform: scale(1.05);
 }
@@ -45,20 +45,20 @@
 }
 
 .zoom-reset {
-  font-size: var(--font-size-base);
+  font-size: var(--font-base-size);
 }
 
 @media (max-width: 768px) {
   .zoom-controls {
     top: auto;
     bottom: 140px;
-    right: var(--spacing-sm);
+    right: var(--space-sm);
     flex-direction: row;
   }
-  
+
   .zoom-button {
     width: 36px;
     height: 36px;
-    font-size: var(--font-size-base);
+    font-size: var(--font-base-size);
   }
 }

@@ -6,10 +6,10 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--spacing-xs);
-  padding: var(--spacing-sm) var(--spacing-md);
+  gap: var(--space-xs);
+  padding: var(--space-sm) var(--space-md);
   border-radius: var(--radius-md);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-sm);
   font-weight: 500;
   cursor: pointer;
   transition: all var(--transition-fast);
@@ -25,14 +25,14 @@
 
 /* Button Variants */
 .btn-primary {
-  background: var(--color-primary);
+  background: var(--color-main);
   color: white;
-  border: 1px solid var(--color-primary);
+  border: 1px solid var(--color-main);
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: var(--color-primary-dark);
-  border-color: var(--color-primary-dark);
+  background: var(--color-main-dark);
+  border-color: var(--color-main-dark);
 }
 
 .btn-secondary {
@@ -69,13 +69,13 @@
 
 /* Button Sizes */
 .btn-sm {
-  padding: var(--spacing-xs) var(--spacing-sm);
-  font-size: var(--font-size-xs);
+  padding: var(--space-xs) var(--space-sm);
+  font-size: var(--font-xs);
 }
 
 .btn-lg {
-  padding: var(--spacing-md) var(--spacing-xl);
-  font-size: var(--font-size-lg);
+  padding: var(--space-md) var(--space-xl);
+  font-size: var(--font-lg);
 }
 
 /* Panel Styles */
@@ -95,8 +95,8 @@
 .panel-header {
   display: flex;
   align-items: center;
-  gap: var(--spacing-sm);
-  padding: var(--spacing-md);
+  gap: var(--space-sm);
+  padding: var(--space-md);
   cursor: pointer;
   user-select: none;
   border-bottom: 1px solid var(--color-border);
@@ -109,24 +109,24 @@
 
 .panel-title {
   font-weight: 600;
-  color: var(--color-primary);
-  font-size: var(--font-size-sm);
+  color: var(--color-main);
+  font-size: var(--font-sm);
 }
 
 .panel-toggle {
   font-weight: bold;
-  color: var(--color-primary);
-  font-size: var(--font-size-lg);
+  color: var(--color-main);
+  font-size: var(--font-lg);
   width: 20px;
   text-align: center;
   margin-left: auto;
 }
 
 .panel-content {
-  padding: var(--spacing-md);
+  padding: var(--space-md);
   animation: slideDown var(--transition-normal) cubic-bezier(0.25, 0.46, 0.45, 0.94);
   background: white;
-  color: var(--color-primary);
+  color: var(--color-main);
 }
 
 @keyframes slideDown {
@@ -142,29 +142,29 @@
 
 /* Form Styles */
 .form-group {
-  margin-bottom: var(--spacing-lg);
+  margin-bottom: var(--space-lg);
 }
 
 .form-label {
   display: block;
-  margin-bottom: var(--spacing-xs);
+  margin-bottom: var(--space-xs);
   font-weight: 500;
   color: var(--color-text);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-sm);
 }
 
 .form-input {
   width: 100%;
-  padding: var(--spacing-sm);
+  padding: var(--space-sm);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  font-size: var(--font-size-sm);
+  font-size: var(--font-sm);
   transition: border-color var(--transition-fast);
 }
 
 .form-input:focus {
   outline: none;
-  border-color: var(--color-primary);
+  border-color: var(--color-main);
   box-shadow: 0 0 0 2px rgba(44, 85, 48, 0.1);
 }
 
@@ -173,9 +173,9 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: var(--font-size-sm);
+  font-size: var(--font-sm);
   cursor: pointer;
-  padding: var(--spacing-xs) 6px;
+  padding: var(--space-xs) 6px;
   border-radius: var(--radius-md);
   transition: background-color var(--transition-fast);
 }
@@ -191,7 +191,7 @@
 /* Grid Layouts */
 .grid {
   display: grid;
-  gap: var(--spacing-md);
+  gap: var(--space-md);
 }
 
 .grid-cols-2 {

@@ -6,11 +6,12 @@
  * レポート生成機能を提供するパネル
  */
 @import '../styles/variables.css';
+@import '../styles/design-patterns.css';
 
 .export-controls {
   position: fixed;
   bottom: 100px;
-  right: var(--spacing-lg);
+  right: var(--space-lg);
   width: 300px;
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
@@ -29,42 +30,47 @@
 .control-header {
   display: flex;
   align-items: center;
-  gap: var(--spacing-sm);
-  padding: var(--spacing-sm) var(--spacing-md);
+  gap: var(--item-gap);
+  padding: var(--content-padding);
   cursor: pointer;
   user-select: none;
   border-bottom: 1px solid var(--color-border);
+  background: var(--color-white);
+  color: var(--color-main);
   transition: background-color var(--transition-fast);
 }
 
 .control-header:hover {
-  background: var(--color-surface);
+  background: var(--color-main-pale);
 }
 
 .control-icon {
-  font-size: var(--font-size-lg);
+  font-size: var(--font-lg);
+  color: inherit;
 }
 
 .control-title {
   font-weight: 600;
-  color: var(--color-primary);
+  color: inherit;
   flex: 1;
-  font-size: var(--font-size-sm);
+  font-size: var(--font-title);
 }
 
 .control-toggle {
   font-weight: bold;
-  color: var(--color-primary);
-  font-size: var(--font-size-lg);
+  color: inherit;
+  font-size: var(--font-lg);
   width: 20px;
   text-align: center;
 }
 
 .control-content {
-  padding: 16px;
+  padding: var(--content-padding);
   max-height: calc(100vh - 280px);
   overflow-y: auto;
-  animation: slideDown 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  animation: slideDown var(--transition-normal) cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  background: var(--color-background);
+  color: var(--color-text);
 }
 
 /* サイドバー内での高さ制限を解除してスクロールを改善 */
@@ -86,9 +92,9 @@
 
 /* Export Sections */
 .export-section {
-  margin-bottom: 20px;
-  padding-bottom: 15px;
-  border-bottom: 1px solid #eee;
+  margin-bottom: var(--section-margin);
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--color-border);
 }
 
 .export-section:last-child {
@@ -98,41 +104,41 @@
 }
 
 .export-section h4 {
-  margin: 0 0 10px 0;
-  color: #2c5530;
-  font-size: 0.9em;
-  padding-bottom: 5px;
-  border-bottom: 1px solid rgba(44, 85, 48, 0.2);
+  margin: 0 0 var(--space-sm) 0;
+  color: var(--color-main);
+  font-size: var(--font-subtitle);
+  padding-bottom: var(--space-xs);
+  border-bottom: 1px solid var(--color-main-pale);
 }
 
 /* Export Buttons */
 .export-button {
   width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  background: white;
-  color: #333;
-  font-size: 0.85em;
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-white);
+  color: var(--color-main);
+  font-size: var(--font-button);
   cursor: pointer;
-  transition: all 0.2s ease;
-  margin-bottom: 8px;
+  transition: all var(--transition-fast);
+  margin-bottom: var(--space-sm);
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--item-gap);
   font-weight: 500;
 }
 
 .export-button:hover:not(:disabled) {
-  border-color: #2c5530;
-  background: rgba(44, 85, 48, 0.05);
+  border-color: var(--color-main);
+  background: var(--color-main-pale);
   transform: translateY(-1px);
 }
 
 .export-button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-  background: #f5f5f5;
+  background: var(--color-neutral-100);
 }
 
 .export-button.image {

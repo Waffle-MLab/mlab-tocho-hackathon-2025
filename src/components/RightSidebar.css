@@ -1,12 +1,14 @@
 @import '../styles/variables.css';
+@import '../styles/design-patterns.css';
 
 .right-sidebar {
   position: fixed;
   top: var(--header-height);
   right: 0;
   width: 60px;
-  background: white;
-  border: 2px solid var(--color-primary);
+  top: 90px;
+  background-color: var(--color-white);
+  border: 1px solid var(--color-main);
   border-right: none;
   border-radius: var(--radius-lg) 0 0 var(--radius-lg);
   box-shadow: var(--shadow-lg);
@@ -19,7 +21,7 @@
 }
 
 .right-sidebar.expanded {
-  width: 380px;
+  width: 340px;
   box-shadow: var(--shadow-xl);
 }
 
@@ -27,20 +29,21 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--spacing-md);
+  padding: var(--content-padding);
   cursor: pointer;
   user-select: none;
   border-bottom: 1px solid var(--color-border);
   min-height: 60px;
-  background: var(--color-primary);
-  color: white;
+  background: var(--bg-main);
+  color: var(--text-on-main);
   flex-shrink: 0;
+  transition: background-color var(--transition-fast);
 }
 
 .sidebar-title {
   font-weight: 600;
-  color: white;
-  font-size: var(--font-size-sm);
+  color: inherit;
+  font-size: var(--font-title);
   display: none;
 }
 
@@ -51,8 +54,8 @@
 
 .sidebar-toggle {
   font-weight: bold;
-  color: white;
-  font-size: var(--font-size-lg);
+  color: inherit;
+  font-size: var(--font-lg);
   transition: transform var(--transition-fast);
 }
 
@@ -66,7 +69,8 @@
   overflow-x: hidden;
   padding: 0;
   animation: slideIn var(--transition-normal) ease-out;
-  min-height: 0; /* フレックスボックスでのスクロール有効化 */
+  min-height: 0;
+  /* フレックスボックスでのスクロール有効化 */
 }
 
 @keyframes slideIn {
@@ -81,49 +85,51 @@
   }
 }
 
-.sidebar-section {
-  margin-bottom: var(--spacing-md);
-}
 
-/* Override individual panel styles when in sidebar */
+/* ===================================
+ * SIDEBAR PANEL OVERRIDES
+ * =================================== */
+
+/* 基本的なパネルスタイルのオーバーライド */
 .sidebar-content .statistics-panel,
 .sidebar-content .advanced-filter,
 .sidebar-content .distance-control,
 .sidebar-content .export-controls {
   position: static;
   width: 100%;
-  background: white;
+  background: var(--color-white);
   border-radius: 0;
   box-shadow: none;
   margin: 0;
   border-bottom: 1px solid var(--color-border);
-  flex-shrink: 0; /* パネルの高さを保持 */
+  flex-shrink: 0;
 }
 
-/* パネル内のコンテンツ部分でスクロール調整 */
+/* パネルコンテンツの基本設定 */
 .sidebar-content .panel-content,
 .sidebar-content .filter-content,
 .sidebar-content .control-content {
-  max-height: none; /* 個別パネルの高さ制限を解除 */
-  overflow: visible; /* サイドバー全体でスクロール管理 */
+  max-height: none;
+  overflow: visible;
+  background: var(--color-background);
+  color: var(--color-text);
+  padding: var(--content-padding);
 }
 
-/* パネルコンテンツの背景色と文字色を統一 */
-.sidebar-content .panel-content,
-.sidebar-content .filter-content,
-.sidebar-content .control-content {
-  background: white;
-  color: var(--color-primary-soft);
+/* サイドバー内でのテキスト色調整 */
+.sidebar-content {
+  color: var(--text-on-main);
 }
 
-/* パネル内のテキスト要素も薄い紺色に */
-.sidebar-content .panel-content *,
 .sidebar-content .filter-content *,
 .sidebar-content .control-content * {
-  color: var(--color-primary-soft);
+  color: var(--color-text-secondary);
 }
 
-/* ただし、特定の色が設定されている要素は除外 */
+
+
+
+/* 特定色要素は除外（樹木状態、ボタンなど） */
 .sidebar-content .healthy,
 .sidebar-content .condition-健全,
 .sidebar-content .condition-要観察,
@@ -137,17 +143,18 @@
   color: inherit;
 }
 
-/* Special styling for Statistics Panel */
+/* Statistics Panel の特別スタイル */
 .sidebar-content .statistics-panel {
-  background: white;
-  border-bottom: 4px solid var(--color-primary);
-  margin-bottom: var(--spacing-lg);
+  background: var(--color-background);
+  border-bottom: 4px solid var(--color-main);
 }
 
-.sidebar-content .statistics-panel .panel-header {
-  color: white;
+.sidebar-content .statistics-panel {
+  background: var(--bg-main);
+  color: var(--text-on-main);
 }
 
+/* 最後の要素の下線を除去 */
 .sidebar-content .statistics-panel:last-child,
 .sidebar-content .advanced-filter:last-child,
 .sidebar-content .distance-control:last-child,
@@ -157,7 +164,8 @@
 
 /* Custom scrollbar for sidebar content */
 .sidebar-content {
-  scroll-behavior: smooth; /* スムーススクロール */
+  scroll-behavior: smooth;
+  /* スムーススクロール */
 }
 
 .sidebar-content::-webkit-scrollbar {
@@ -171,34 +179,21 @@
 }
 
 .sidebar-content::-webkit-scrollbar-thumb {
-  background: var(--color-primary-soft);
+  background: var(--color-main-soft);
   border-radius: 4px;
   border: 1px solid var(--color-surface);
   transition: all var(--transition-fast);
 }
 
 .sidebar-content::-webkit-scrollbar-thumb:hover {
-  background: var(--color-primary);
+  background: var(--color-main);
   transform: scaleX(1.2);
 }
 
 /* Firefox対応 */
 .sidebar-content {
   scrollbar-width: thin;
-  scrollbar-color: var(--color-primary-soft) var(--color-surface);
-}
-
-/* スクロール可能であることを示すビジュアルヒント */
-.right-sidebar.expanded .sidebar-content::before {
-  content: '';
-  position: sticky;
-  top: 0;
-  height: 2px;
-  background: linear-gradient(to right, var(--color-primary), transparent);
-  display: block;
-  z-index: 1;
-  opacity: 0;
-  transition: opacity var(--transition-fast);
+  scrollbar-color: var(--color-main-soft) var(--color-surface);
 }
 
 .right-sidebar.expanded .sidebar-content:hover::before {
@@ -210,7 +205,7 @@
   position: sticky;
   bottom: 0;
   height: 2px;
-  background: linear-gradient(to right, transparent, var(--color-primary));
+  background: linear-gradient(to right, transparent, var(--color-main));
   display: block;
   z-index: 1;
   opacity: 0;
@@ -225,8 +220,8 @@
   .right-sidebar {
     top: auto;
     bottom: var(--footer-height-mobile);
-    left: var(--spacing-sm);
-    right: var(--spacing-sm);
+    left: var(--space-sm);
+    right: var(--space-sm);
     width: auto;
     max-height: calc(60vh - 20px);
     border-radius: var(--radius-lg);
@@ -241,7 +236,7 @@
     flex: 1;
     min-height: 0;
   }
-  
+
   /* モバイルでのスクロールバー調整 */
   .sidebar-content::-webkit-scrollbar {
     width: 6px;

@@ -1,0 +1,237 @@
+/* 
+ * ===================================
+ * DESIGN PATTERN UTILITY CLASSES
+ * ===================================
+ * よく使用される色とスペーシングのパターンをクラス化
+ * 調整が簡単になるようにvariables.cssの値を使用
+ */
+
+/* ===================
+ * COLOR PATTERN CLASSES
+ * =================== */
+
+/* パターン1: メインカラー背景 + 白テキスト */
+.bg-main {
+  background: var(--bg-main);
+  color: var(--text-on-main);
+  border-color: var(--border-main);
+}
+
+.bg-main:hover {
+  background: var(--color-main-light);
+}
+
+/* パターン2: 白背景 + メインカラーテキスト + メインカラー枠 */
+.bg-white-main {
+  background: var(--color-white);
+  color: var(--color-main);
+  border: 1px solid var(--color-main);
+}
+
+.bg-white-main:hover {
+  background: var(--color-main-pale);
+}
+
+/* パターン3: サブカラー背景 + 濃いテキスト */
+.bg-sub {
+  background: var(--color-main-pale);
+  color: var(--color-main);
+  border-color: var(--color-sub-soft);
+}
+
+/* パターン4: ニュートラル背景 */
+.bg-neutral {
+  background: var(--color-neutral-50);
+  color: var(--color-neutral-700);
+  border-color: var(--color-neutral-200);
+}
+
+/* ===================
+ * SPACING PATTERN CLASSES
+ * =================== */
+
+/* パネル系 */
+.panel-padding {
+  padding: var(--panel-padding);
+}
+
+.panel-margin {
+  margin: var(--panel-margin);
+}
+
+.content-padding {
+  padding: var(--content-padding);
+}
+
+.section-margin {
+  margin: var(--section-margin);
+}
+
+/* ボタン */
+.button-padding {
+  padding: var(--button-padding);
+}
+
+/* ギャップ */
+.item-gap {
+  gap: var(--item-gap);
+}
+
+/* ===================
+ * TYPOGRAPHY PATTERN CLASSES
+ * =================== */
+
+.font-title {
+  font-size: var(--font-title);
+  font-weight: 600;
+}
+
+.font-subtitle {
+  font-size: var(--font-subtitle);
+  font-weight: 500;
+}
+
+.font-button {
+  font-size: var(--font-button);
+  font-weight: 500;
+}
+
+.font-label {
+  font-size: var(--font-label);
+  font-weight: 500;
+}
+
+.font-caption {
+  font-size: var(--font-caption);
+  color: var(--color-text-muted);
+}
+
+/* ===================
+ * COMPONENT PATTERN CLASSES
+ * =================== */
+
+/* 標準的なパネルヘッダー */
+.panel-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--content-padding);
+  cursor: pointer;
+  user-select: none;
+  border-bottom: 1px solid var(--color-border);
+  transition: background-color var(--transition-fast);
+}
+
+.panel-header.main {
+  background: var(--bg-main);
+  color: var(--text-on-main);
+}
+
+.panel-header.white-main {
+  background: var(--color-white);
+  color: var(--color-main);
+  border: 1px solid var(--color-main);
+  border-bottom: 1px solid var(--color-main);
+}
+
+.panel-header.white-main:hover {
+  background: var(--color-main-pale);
+}
+
+/* 標準的なパネルコンテンツ */
+.panel-content {
+  padding: var(--content-padding);
+  background: var(--color-background);
+  color: var(--color-text);
+}
+
+/* 標準的なボタン */
+.btn-main {
+  padding: var(--button-padding);
+  background: var(--bg-main);
+  color: var(--text-on-main);
+  border: 1px solid var(--border-main);
+  border-radius: var(--radius-md);
+  font-size: var(--font-button);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-main:hover {
+  background: var(--color-main-light);
+  transform: translateY(-1px);
+}
+
+.btn-white-main {
+  padding: var(--button-padding);
+  background: var(--color-white);
+  color: var(--color-main);
+  border: 1px solid var(--color-main);
+  border-radius: var(--radius-md);
+  font-size: var(--font-button);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.btn-white-main:hover {
+  background: var(--color-main-pale);
+  transform: translateY(-1px);
+}
+
+/* ===================
+ * LAYOUT PATTERNS
+ * =================== */
+
+/* フレックスコンテナパターン */
+.flex-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.flex-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.flex-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+/* グリッドパターン */
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-sm);
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-sm);
+}
+
+/* ===================
+ * RESPONSIVE PATTERNS
+ * =================== */
+
+@media (max-width: 768px) {
+
+  .mobile-stack .grid-2,
+  .mobile-stack .grid-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .mobile-compact .panel-padding,
+  .mobile-compact .content-padding {
+    padding: var(--space-sm);
+  }
+
+  .mobile-compact .panel-margin,
+  .mobile-compact .section-margin {
+    margin: var(--space-sm);
+  }
+}
