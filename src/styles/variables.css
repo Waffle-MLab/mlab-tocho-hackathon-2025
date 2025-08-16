@@ -129,6 +129,8 @@
   /* 32px - 大セクション間 */
   --space-2xl: calc(var(--space-unit) * 12);
   /* 48px - ページ要素間 */
+  --space-3xl: calc(var(--space-unit) * 16);
+  /* 64px - ページ要素間 */
 
   /* コンポーネント専用スペーシング */
   --panel-padding: var(--space-md);
