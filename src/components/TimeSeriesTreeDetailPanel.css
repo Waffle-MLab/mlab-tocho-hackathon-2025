@@ -153,14 +153,8 @@
   align-items: center;
   padding: var(--space-sm) var(--space-md);
   margin-bottom: var(--space-xs);
-  background: var(--color-main-pale);
   border-radius: var(--radius-md);
   transition: all var(--transition-fast);
-}
-
-.detail-item:hover {
-  background: var(--color-main-pale);
-  transform: translateX(4px);
 }
 
 .detail-item label {
