@@ -30,8 +30,43 @@
 .year-buttons {
   display: flex;
   gap: var(--space-sm);
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  position: relative;
+  padding: 0 var(--space-md);
+  scroll-behavior: smooth;
+}
+
+.year-buttons::-webkit-scrollbar {
+  display: none;
+}
+
+/* 横スクロール可能であることを示すフェードエフェクト */
+.year-buttons::before,
+.year-buttons::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 20px;
+  pointer-events: none;
+  z-index: 1;
+  transition: opacity var(--transition-fast);
+}
+
+.year-buttons::before {
+  left: 0;
+  background: linear-gradient(to right, var(--color-main), transparent);
+  opacity: 0.8;
+}
+
+.year-buttons::after {
+  right: 0;
+  background: linear-gradient(to left, var(--color-main), transparent);
+  opacity: 0.8;
 }
 
 .year-button {
@@ -45,6 +80,10 @@
   cursor: pointer;
   transition: all var(--transition-normal);
   backdrop-filter: blur(5px);
+  flex-shrink: 0;
+  white-space: nowrap;
+  position: relative;
+  z-index: 2;
 }
 
 .year-button:hover:not(:disabled) {
@@ -140,24 +179,9 @@
     align-items: center;
   }
   
-  .year-buttons {
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    width: 100%;
-    padding: 0 var(--space-sm);
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-
-  .year-buttons::-webkit-scrollbar {
-    display: none;
-  }
-  
   .year-button {
-    flex-shrink: 0;
     padding: 6px var(--space-md);
     font-size: var(--font-sm);
-    white-space: nowrap;
   }
 
   .playback-controls {

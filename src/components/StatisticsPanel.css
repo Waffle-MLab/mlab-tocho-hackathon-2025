@@ -41,6 +41,11 @@
   transition: background-color var(--transition-fast);
 }
 
+.panel-header:hover,
+.statistics-panel.expanded .panel-header {
+  background: var(--color-neutral-100);
+}
+
 
 .panel-icon {
   font-size: var(--font-lg);
@@ -67,6 +72,7 @@
   font-size: var(--font-lg);
   width: 20px;
   text-align: center;
+  margin-left: auto;
 }
 
 .panel-content {

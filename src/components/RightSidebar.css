@@ -85,6 +85,13 @@
   }
 }
 
+.sidebar-section {
+  margin-bottom: var(--space-lg);
+}
+
+.sidebar-section:last-child {
+  margin-bottom: 0;
+}
 
 /* ===================================
  * SIDEBAR PANEL OVERRIDES

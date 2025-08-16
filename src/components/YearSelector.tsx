@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import './YearSelector.css'
 
 interface YearSelectorProps {
@@ -11,12 +11,37 @@ interface YearSelectorProps {
 const YearSelector = ({ years, selectedYear, onYearChange, loading }: YearSelectorProps) => {
   const [isPlaying, setIsPlaying] = useState(false)
   const [playbackSpeed, setPlaybackSpeed] = useState(1000) // milliseconds
+  const yearButtonsRef = useRef<HTMLDivElement>(null)
+
+  // 選択された年代を中央に表示する関数
+  const scrollToYear = useCallback((year: number) => {
+    if (!yearButtonsRef.current) return
+    
+    const yearButton = yearButtonsRef.current.querySelector(`[data-year="${year}"]`) as HTMLElement
+    if (!yearButton) return
+    
+    const container = yearButtonsRef.current
+    const containerWidth = container.clientWidth
+    const buttonLeft = yearButton.offsetLeft
+    const buttonWidth = yearButton.offsetWidth
+    
+    // ボタンを中央に配置するためのスクロール位置を計算
+    const scrollLeft = buttonLeft - (containerWidth / 2) + (buttonWidth / 2)
+    
+    container.scrollTo({
+      left: scrollLeft,
+      behavior: 'smooth'
+    })
+  }, [])
 
   const nextYear = useCallback(() => {
     const currentIndex = years.indexOf(selectedYear)
     const nextIndex = (currentIndex + 1) % years.length
-    onYearChange(years[nextIndex])
-  }, [years, selectedYear, onYearChange])
+    const nextYearValue = years[nextIndex]
+    onYearChange(nextYearValue)
+    // アニメーション中は選択年代を見えるようにスクロール
+    setTimeout(() => scrollToYear(nextYearValue), 100)
+  }, [years, selectedYear, onYearChange, scrollToYear])
 
   useEffect(() => {
     if (!isPlaying) return
@@ -69,14 +94,16 @@ const YearSelector = ({ years, selectedYear, onYearChange, loading }: YearSelect
           </select>
         </div>
         
-        <div className="year-buttons">
+        <div className="year-buttons" ref={yearButtonsRef}>
           {years.map((year) => (
             <button
               key={year}
+              data-year={year}
               className={`year-button ${selectedYear === year ? 'active' : ''}`}
               onClick={() => {
                 setIsPlaying(false)
                 onYearChange(year)
+                scrollToYear(year)
               }}
               disabled={loading}
             >

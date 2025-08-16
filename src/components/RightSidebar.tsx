@@ -86,17 +86,13 @@ const RightSidebar = ({
               onToggleClusters={onToggleClusters}
               showOnlyProblematicTrees={showOnlyProblematicTrees}
               onToggleProblematicFilter={onToggleProblematicFilter}
-            />
-          </div>
-          
-          <div className="sidebar-section">
-            <DistanceControl 
-              distance={clusterDistance}
+              clusterDistance={clusterDistance}
               onDistanceChange={onDistanceChange}
               overlapThreshold={overlapThreshold}
               onOverlapThresholdChange={onOverlapThresholdChange}
             />
           </div>
+          
           
           <div className="sidebar-section">
             <ExportControls 
