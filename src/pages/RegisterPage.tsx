@@ -1,5 +1,5 @@
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import L from 'leaflet';
 import { Marker } from 'react-leaflet';
 
@@ -7,6 +7,7 @@ import Map from '../components/Map';
 import RegisterForm from '../components/RegisterForm';
 import StagedTreesList from '../components/StagedTreesList';
 import { TimeSeriesTreeMarkerData } from '../types/tree';
+import { getExistingTrees } from '../repositories/treeRepository';
 
 import '../App.css';
 import '../components/Map.css';
@@ -14,6 +15,14 @@ import './RegisterPage.css';
 
 // Define a type for the staged tree, including the temporary ID
 type StagedTree = Partial<TimeSeriesTreeMarkerData> & { tempId: number };
+
+// Custom icon for existing trees in the DB (grey)
+const existingTreeIcon = new L.DivIcon({
+  html: `<svg viewBox="0 0 24 24" width="24" height="24" fill="#888888" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>`,
+  className: 'custom-div-icon',
+  iconSize: [24, 24],
+  iconAnchor: [12, 24],
+});
 
 // Custom icon for staged trees (green)
 const stagedTreeIcon = new L.DivIcon({
@@ -32,9 +41,23 @@ const selectedCoordIcon = new L.DivIcon({
 });
 
 function RegisterPage() {
+  const [existingTrees, setExistingTrees] = useState<TimeSeriesTreeMarkerData[]>([]);
   const [stagedTrees, setStagedTrees] = useState<StagedTree[]>([]);
   const [coordinates, setCoordinates] = useState<L.LatLng | null>(null);
   const [editingTree, setEditingTree] = useState<StagedTree | null>(null);
+
+  useEffect(() => {
+    const fetchTrees = async () => {
+      try {
+        const trees = await getExistingTrees();
+        setExistingTrees(trees);
+      } catch (error) {
+        console.error("Failed to fetch existing trees:", error);
+        alert('既存の樹木データの読み込みに失敗しました。');
+      }
+    };
+    fetchTrees();
+  }, []);
 
   const mapConfig = {
     center: [35.6718, 139.5503] as [number, number],
@@ -113,6 +136,16 @@ function RegisterPage() {
           zoom={mapConfig.zoom}
           onMapClick={handleMapClick}
         >
+          {/* Display existing trees from DB */}
+          {existingTrees.map(tree => (
+            <Marker 
+              key={tree.treeId} 
+              position={[tree.latitude, tree.longitude]} 
+              icon={existingTreeIcon} 
+            />
+          ))}
+
+          {/* Display trees being staged for registration */}
           {stagedTrees.map(tree => (
             <Marker 
               key={tree.tempId} 
@@ -120,6 +153,8 @@ function RegisterPage() {
               icon={editingTree?.tempId === tree.tempId ? selectedCoordIcon : stagedTreeIcon} 
             />
           ))}
+
+          {/* Display marker for new coordinate selection */}
           {coordinates && !editingTree && <Marker position={coordinates} icon={selectedCoordIcon} />}
         </Map>
         <div className="sidebar">
