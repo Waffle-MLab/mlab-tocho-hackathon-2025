@@ -40,7 +40,7 @@ const AddRecordForm: React.FC<AddRecordFormProps> = ({ selectedTree, editingReco
     clearEditing();
   }
 
-  const currentTree = editingRecord ? { treeId: editingRecord.treeId, name: editingRecord.treeName } : selectedTree;
+  const currentTree = editingRecord ? { treeId: editingRecord.treeId, species: editingRecord.treeSpecies } : selectedTree;
 
   if (!currentTree) {
     return (
@@ -55,7 +55,7 @@ const AddRecordForm: React.FC<AddRecordFormProps> = ({ selectedTree, editingReco
       <h3>{editingRecord ? '記録の編集' : '記録の追加'}</h3>
       <div className="selected-tree-info">
         <p><strong>樹木ID:</strong> {currentTree.treeId}</p>
-        <p><strong>樹木名:</strong> {currentTree.name || 'N/A'}</p>
+        <p><strong>樹種:</strong> {currentTree.species || 'N/A'}</p>
       </div>
       <form onSubmit={handleSubmit}>
         <div className="form-group">

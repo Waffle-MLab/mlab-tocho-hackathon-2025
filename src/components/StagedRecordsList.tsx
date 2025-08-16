@@ -5,7 +5,7 @@ import './StagedRecordsList.css';
 export type StagedRecord = {
   tempId: number;
   treeId: string;
-  treeName?: string;
+  treeSpecies?: string;
   record: string;
 };
 
@@ -35,10 +35,10 @@ const StagedRecordsList: React.FC<StagedRecordsListProps> = ({ stagedRecords, on
         <div className="grouped-records-container">
           {treeIds.map(treeId => {
             const records = groupedRecords[treeId];
-            const treeName = records[0].treeName || '名前なし';
+            const treeSpecies = records[0].treeSpecies || '名前なし';
             return (
               <div key={treeId} className="tree-group">
-                <h5 className="tree-group-header">樹木ID: {treeId} ({treeName})</h5>
+                <h5 className="tree-group-header">樹木ID: {treeId} ({treeSpecies})</h5>
                 <ul className="staged-records-list">
                   {records.map((r) => (
                     <li key={r.tempId} className="staged-record-item">

@@ -79,7 +79,7 @@ function AddRecordPage() {
       const newRecord: StagedRecord = {
         tempId: Date.now(),
         treeId: selectedTree.treeId,
-        treeName: selectedTree.name,
+        treeSpecies: selectedTree.species,
         record: recordText,
       };
       setStagedRecords([...stagedRecords, newRecord]);
@@ -147,7 +147,7 @@ function AddRecordPage() {
             >
               <Popup>
                 樹木ID: {tree.treeId}<br />
-                {tree.name || '名前なし'}
+                {tree.species || '名前なし'}
               </Popup>
             </Marker>
           ))}
