@@ -1,18 +1,30 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TimeSeriesTreeMarkerData } from '../types/tree';
+import { StagedRecord } from './StagedRecordsList';
 import './AddRecordForm.css';
 
 interface AddRecordFormProps {
   selectedTree: TimeSeriesTreeMarkerData | null;
+  editingRecord: StagedRecord | null;
+  onSaveRecord: (recordText: string) => void;
+  clearEditing: () => void;
 }
 
-const AddRecordForm: React.FC<AddRecordFormProps> = ({ selectedTree }) => {
+const AddRecordForm: React.FC<AddRecordFormProps> = ({ selectedTree, editingRecord, onSaveRecord, clearEditing }) => {
   const [record, setRecord] = useState('');
+
+  useEffect(() => {
+    if (editingRecord) {
+      setRecord(editingRecord.record);
+    } else {
+      setRecord('');
+    }
+  }, [editingRecord]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!selectedTree) {
+    if (!editingRecord && !selectedTree) {
       alert('樹木が選択されていません。');
       return;
     }
@@ -20,11 +32,17 @@ const AddRecordForm: React.FC<AddRecordFormProps> = ({ selectedTree }) => {
       alert('記録内容を入力してください。');
       return;
     }
-    alert(`樹木ID: ${selectedTree.treeId}\n記録内容: ${record}`);
-    setRecord('');
+    onSaveRecord(record);
+    setRecord(''); // Clear form after saving
   };
 
-  if (!selectedTree) {
+  const handleCancelEdit = () => {
+    clearEditing();
+  }
+
+  const currentTree = editingRecord ? { treeId: editingRecord.treeId, name: editingRecord.treeName } : selectedTree;
+
+  if (!currentTree) {
     return (
       <div className="add-record-form-container">
         <p>地図上の樹木をクリックして、記録を開始します。</p>
@@ -34,10 +52,10 @@ const AddRecordForm: React.FC<AddRecordFormProps> = ({ selectedTree }) => {
 
   return (
     <div className="add-record-form-container">
-      <h3>記録の追加</h3>
+      <h3>{editingRecord ? '記録の編集' : '記録の追加'}</h3>
       <div className="selected-tree-info">
-        <p><strong>樹木ID:</strong> {selectedTree.treeId}</p>
-        <p><strong>樹木名:</strong> {selectedTree.name || 'N/A'}</p>
+        <p><strong>樹木ID:</strong> {currentTree.treeId}</p>
+        <p><strong>樹木名:</strong> {currentTree.name || 'N/A'}</p>
       </div>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
@@ -50,7 +68,16 @@ const AddRecordForm: React.FC<AddRecordFormProps> = ({ selectedTree }) => {
             placeholder="調査日、内容、治療の有無などを記録します。"
           />
         </div>
-        <button type="submit" className="submit-button">この内容で記録する</button>
+        <div className="form-actions">
+          <button type="submit" className="submit-button">
+            {editingRecord ? '記録を更新' : '記録を追加'}
+          </button>
+          {editingRecord && (
+            <button type="button" onClick={handleCancelEdit} className="cancel-button">
+              キャンセル
+            </button>
+          )}
+        </div>
       </form>
     </div>
   );
