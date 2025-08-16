@@ -10,12 +10,16 @@
 }
 
 .App-header {
-  background-color: var(--color-primary);
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
   padding: var(--spacing-sm) var(--spacing-md);
   color: white;
   flex-shrink: 0;
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-md), 0 4px 12px rgba(0, 0, 0, 0.15);
   z-index: var(--z-fixed);
+  height: var(--header-height);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
 }
 
 .header-content {
@@ -47,6 +51,8 @@
   flex: 1;
   position: relative;
   overflow: hidden;
+  margin-top: 0;
+  padding-top: 0;
 }
 
 @media (max-width: 768px) {

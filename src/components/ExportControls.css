@@ -67,6 +67,12 @@
   animation: slideDown 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
+/* サイドバー内での高さ制限を解除してスクロールを改善 */
+.right-sidebar .sidebar-content .export-controls .control-content {
+  max-height: none;
+  overflow-y: visible;
+}
+
 @keyframes slideDown {
   from {
     opacity: 0;
@@ -157,6 +163,26 @@
 .export-button.cluster:hover:not(:disabled) {
   background: rgba(139, 92, 246, 0.05);
   border-color: #7c3aed;
+}
+
+.export-button.geojson {
+  border-color: #06b6d4;
+  color: #06b6d4;
+}
+
+.export-button.geojson:hover:not(:disabled) {
+  background: rgba(6, 182, 212, 0.05);
+  border-color: #0891b2;
+}
+
+.export-button.shapefile {
+  border-color: #10b981;
+  color: #10b981;
+}
+
+.export-button.shapefile:hover:not(:disabled) {
+  background: rgba(16, 185, 129, 0.05);
+  border-color: #059669;
 }
 
 .export-button.report {

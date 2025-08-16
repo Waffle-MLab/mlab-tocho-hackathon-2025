@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import L from 'leaflet'
 import { TimeSeriesTreeMarkerData } from '../types/tree'
 import { ClusterData } from '../utils/clustering'
 import StatisticsPanel from './StatisticsPanel'
@@ -24,10 +25,16 @@ interface RightSidebarProps {
   // Clustering
   clusterDistance: number
   onDistanceChange: (distance: number) => void
+  overlapThreshold?: number
+  onOverlapThresholdChange?: (threshold: number) => void
   
   // Export
   filteredTrees: TimeSeriesTreeMarkerData[]
   clusters: ClusterData[]
+  mapBounds?: L.LatLngBounds | null
+  
+  // Viewport filtering for statistics
+  allTreesInViewport?: TimeSeriesTreeMarkerData[]
 }
 
 const RightSidebar = ({
@@ -41,8 +48,12 @@ const RightSidebar = ({
   onToggleProblematicFilter,
   clusterDistance,
   onDistanceChange,
+  overlapThreshold,
+  onOverlapThresholdChange,
   filteredTrees,
-  clusters
+  clusters,
+  mapBounds,
+  allTreesInViewport
 }: RightSidebarProps) => {
   const [isExpanded, setIsExpanded] = useState(false)
 
@@ -62,6 +73,7 @@ const RightSidebar = ({
               trees={trees}
               availableYears={availableYears}
               selectedYear={selectedYear}
+              allTreesInViewport={allTreesInViewport}
             />
           </div>
           
@@ -81,6 +93,8 @@ const RightSidebar = ({
             <DistanceControl 
               distance={clusterDistance}
               onDistanceChange={onDistanceChange}
+              overlapThreshold={overlapThreshold}
+              onOverlapThresholdChange={onOverlapThresholdChange}
             />
           </div>
           
@@ -89,6 +103,8 @@ const RightSidebar = ({
               trees={filteredTrees}
               clusters={clusters}
               selectedYear={selectedYear}
+              viewportTrees={allTreesInViewport}
+              mapBounds={mapBounds}
             />
           </div>
         </div>

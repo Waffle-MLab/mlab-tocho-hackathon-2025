@@ -1,33 +1,29 @@
 import './ZoomControls.css'
+import { getGlobalMapInstance } from '../utils/mapInstance'
 
 interface ZoomControlsProps {
   isExpanded: boolean
 }
 
-// グローバルなマップ参照を作成
-let globalMapInstance: any = null
-
-// Mapコンポーネントからマップインスタンスをセットするためのヘルパー
-export const setGlobalMapInstance = (mapInstance: any) => {
-  globalMapInstance = mapInstance
-}
-
 const ZoomControls = ({ isExpanded }: ZoomControlsProps) => {
   const handleZoomIn = () => {
-    if (globalMapInstance && globalMapInstance.zoomIn) {
-      globalMapInstance.zoomIn()
+    const mapInstance = getGlobalMapInstance()
+    if (mapInstance && mapInstance.zoomIn) {
+      mapInstance.zoomIn()
     }
   }
 
   const handleZoomOut = () => {
-    if (globalMapInstance && globalMapInstance.zoomOut) {
-      globalMapInstance.zoomOut()
+    const mapInstance = getGlobalMapInstance()
+    if (mapInstance && mapInstance.zoomOut) {
+      mapInstance.zoomOut()
     }
   }
 
   const handleResetZoom = () => {
-    if (globalMapInstance && globalMapInstance.setView) {
-      globalMapInstance.setView([35.6718, 139.5503], 16)
+    const mapInstance = getGlobalMapInstance()
+    if (mapInstance && mapInstance.setView) {
+      mapInstance.setView([35.6718, 139.5503], 16)
     }
   }
 

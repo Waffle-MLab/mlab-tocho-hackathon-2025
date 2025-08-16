@@ -17,7 +17,7 @@
  * - DiseaseCluster: 病気クラスター可視化
  */
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo, useCallback } from 'react'
 import './App.css'
 
 // === CORE COMPONENTS ===
@@ -26,34 +26,25 @@ import RightSidebar from './components/RightSidebar'
 import YearSelector from './components/YearSelector'
 
 // === DATA VISUALIZATION COMPONENTS ===
-import TreeMarkers from './components/TreeMarkers'
-import JindaiTreeMarkers from './components/JindaiTreeMarkers'
 import TimeSeriesTreeMarkers from './components/TimeSeriesTreeMarkers'
-import DiseaseCluster from './components/DiseaseCluster'
+import SVGClusterOverlay from './components/SVGClusterOverlay'
 
 // === UI COMPONENTS ===
-import TreeDetailPanel from './components/TreeDetailPanel'
-import JindaiTreeDetailPanel from './components/JindaiTreeDetailPanel'
 import TimeSeriesTreeDetailPanel from './components/TimeSeriesTreeDetailPanel'
-import DataSourceSelector from './components/DataSourceSelector'
 
 // === STYLES & TYPES & UTILITIES ===
 import './components/Map.css'
-import { TreeMarkerData, JindaiTreeMarkerData, TimeSeriesTreeMarkerData, DataSource } from './types/tree'
+import { TimeSeriesTreeMarkerData } from './types/tree'
 import { loadTreeData } from './utils/csvLoader'
 import { clusterTrees, ClusterData } from './utils/clustering'
+import L from 'leaflet'
 
 function App() {
   // ==========================================
   // STATE MANAGEMENT
   // ==========================================
 
-  // === データソース管理 ===
-  const [dataSource, setDataSource] = useState<DataSource>('timeseries')
-
   // === 樹木データ管理 ===
-  const [tokyoTrees, setTokyoTrees] = useState<TreeMarkerData[]>([])           // 東京全域の樹木データ
-  const [jindaiTrees, setJindaiTrees] = useState<JindaiTreeMarkerData[]>([])   // 神代植物公園のデモデータ
   const [timeSeriesTrees, setTimeSeriesTrees] = useState<TimeSeriesTreeMarkerData[]>([]) // 時系列データ（メイン）
   const [filteredTimeSeriesTrees, setFilteredTimeSeriesTrees] = useState<TimeSeriesTreeMarkerData[]>([]) // 年度フィルター済み
   const [advancedFilteredTrees, setAdvancedFilteredTrees] = useState<TimeSeriesTreeMarkerData[]>([]) // 高度フィルター済み
@@ -63,11 +54,10 @@ function App() {
   const [selectedYear, setSelectedYear] = useState<number>(2025)      // 現在選択されている年度
 
   // === UI状態管理 ===
-  const [selectedTokyoTree, setSelectedTokyoTree] = useState<TreeMarkerData | null>(null)
-  const [selectedJindaiTree, setSelectedJindaiTree] = useState<JindaiTreeMarkerData | null>(null)
   const [selectedTimeSeriesTree, setSelectedTimeSeriesTree] = useState<TimeSeriesTreeMarkerData | null>(null)
   const [isPanelOpen, setIsPanelOpen] = useState(false)               // 詳細パネルの開閉状態
   const [flyToLocation, setFlyToLocation] = useState<[number, number] | null>(null) // 地図アニメーション用
+  const [mapBounds, setMapBounds] = useState<L.LatLngBounds | null>(null) // 地図の表示範囲
 
   // === アプリケーション状態 ===
   const [loading, setLoading] = useState(true)                        // データ読み込み状態
@@ -77,51 +67,30 @@ function App() {
   const [showClusters, setShowClusters] = useState(true)              // クラスター表示ON/OFF
   const [showOnlyProblematicTrees, setShowOnlyProblematicTrees] = useState(false) // 問題樹木のみ表示
   const [clusters, setClusters] = useState<ClusterData[]>([])         // 計算済みクラスターデータ
-  const [clusterDistance, setClusterDistance] = useState<number>(100) // クラスタリング距離閾値(m)
+  const [clusterDistance, setClusterDistance] = useState<number>(25) // クラスタリング円の半径(m)
+  const [overlapThreshold, setOverlapThreshold] = useState<number>(0.3) // 円の結合閾値（30%重なりで結合）
 
   // ==========================================
   // CONFIGURATION
   // ==========================================
 
-  /** 地図の初期設定（データソース別） */
-  const mapConfigs = {
-    tokyo: { center: [35.6762, 139.6503] as [number, number], zoom: 11 },      // 東京全域表示
-    jindai: { center: [35.6718, 139.5503] as [number, number], zoom: 16 },     // 神代植物公園拡大表示
-    timeseries: { center: [35.6718, 139.5503] as [number, number], zoom: 16 }  // 時系列データ表示
-  }
+  /** 地図の初期設定 */
+  const mapConfig = { center: [35.6718, 139.5503] as [number, number], zoom: 16 }
 
   useEffect(() => {
     const loadData = async () => {
       try {
         setLoading(true)
-        const treeData = await loadTreeData(dataSource)
+        const timeSeriesData = await loadTreeData()
+        setTimeSeriesTrees(timeSeriesData)
 
-        if (dataSource === 'tokyo') {
-          setTokyoTrees((treeData as TreeMarkerData[]).slice(0, 1000))
-          setJindaiTrees([])
-          setTimeSeriesTrees([])
-          setFilteredTimeSeriesTrees([])
-          setAvailableYears([])
-        } else if (dataSource === 'jindai') {
-          setJindaiTrees(treeData as JindaiTreeMarkerData[])
-          setTokyoTrees([])
-          setTimeSeriesTrees([])
-          setFilteredTimeSeriesTrees([])
-          setAvailableYears([])
-        } else if (dataSource === 'timeseries') {
-          const timeSeriesData = treeData as TimeSeriesTreeMarkerData[]
-          setTimeSeriesTrees(timeSeriesData)
-          setTokyoTrees([])
-          setJindaiTrees([])
+        // Extract available years and sort them
+        const years = Array.from(new Set(timeSeriesData.map(tree => tree.year))).sort()
+        setAvailableYears(years)
 
-          // Extract available years and sort them
-          const years = Array.from(new Set(timeSeriesData.map(tree => tree.year))).sort()
-          setAvailableYears(years)
-
-          // Set default year to the latest year
-          const latestYear = years.length > 0 ? Math.max(...years) : 2025
-          setSelectedYear(latestYear)
-        }
+        // Set default year to the latest year
+        const latestYear = years.length > 0 ? Math.max(...years) : 2025
+        setSelectedYear(latestYear)
 
         setError(null)
       } catch (err) {
@@ -133,11 +102,11 @@ function App() {
     }
 
     loadData()
-  }, [dataSource])
+  }, [])
 
   // Filter time series data by selected year and generate clusters
   useEffect(() => {
-    if (dataSource === 'timeseries' && timeSeriesTrees.length > 0) {
+    if (timeSeriesTrees.length > 0) {
       // Use advanced filtered trees if available, otherwise use all trees
       const treesToFilter = advancedFilteredTrees.length > 0 ? advancedFilteredTrees : timeSeriesTrees
       let filtered = treesToFilter.filter(tree => tree.year === selectedYear)
@@ -154,58 +123,32 @@ function App() {
       setFilteredTimeSeriesTrees(filtered)
 
       // Generate clusters for the filtered data
-      const newClusters = clusterTrees(filtered, clusterDistance)
+      const newClusters = clusterTrees(filtered, clusterDistance, overlapThreshold)
       setClusters(newClusters)
     }
-  }, [dataSource, timeSeriesTrees, advancedFilteredTrees, selectedYear, showOnlyProblematicTrees, clusterDistance])
+  }, [timeSeriesTrees, advancedFilteredTrees, selectedYear, showOnlyProblematicTrees, clusterDistance, overlapThreshold])
 
-  const handleTokyoMarkerClick = (tree: TreeMarkerData) => {
-    setSelectedTokyoTree(tree)
-    setSelectedJindaiTree(null)
-    setSelectedTimeSeriesTree(null)
-    setIsPanelOpen(true)
-    setFlyToLocation([tree.latitude, tree.longitude])
-  }
-
-  const handleJindaiMarkerClick = (tree: JindaiTreeMarkerData) => {
-    setSelectedJindaiTree(tree)
-    setSelectedTokyoTree(null)
-    setSelectedTimeSeriesTree(null)
-    setIsPanelOpen(true)
-    setFlyToLocation([tree.latitude, tree.longitude])
-  }
-
-  const handleTimeSeriesMarkerClick = (tree: TimeSeriesTreeMarkerData) => {
+  const handleTimeSeriesMarkerClick = useCallback((tree: TimeSeriesTreeMarkerData) => {
     setSelectedTimeSeriesTree(tree)
-    setSelectedTokyoTree(null)
-    setSelectedJindaiTree(null)
     setIsPanelOpen(true)
     setFlyToLocation([tree.latitude, tree.longitude])
-  }
+  }, [])
 
-  const handlePanelClose = () => {
+  const handlePanelClose = useCallback(() => {
     setIsPanelOpen(false)
-    setSelectedTokyoTree(null)
-    setSelectedJindaiTree(null)
     setSelectedTimeSeriesTree(null)
     setFlyToLocation(null)
-  }
+  }, [])
 
-  const handleMapClick = () => {
+  const handleMapClick = useCallback(() => {
     if (isPanelOpen) {
       handlePanelClose()
     }
-  }
+    setFlyToLocation(null)
+  }, [isPanelOpen, handlePanelClose])
 
-  const handleDataSourceChange = (source: DataSource) => {
-    setDataSource(source)
-    setIsPanelOpen(false)
-    setSelectedTokyoTree(null)
-    setSelectedJindaiTree(null)
-    setSelectedTimeSeriesTree(null)
-  }
 
-  const handleYearChange = (year: number) => {
+  const handleYearChange = useCallback((year: number) => {
     setSelectedYear(year)
 
     // If a tree is currently selected, try to find the same tree in the new year
@@ -225,20 +168,29 @@ function App() {
         setSelectedTimeSeriesTree(null)
       }
     }
-  }
+  }, [selectedTimeSeriesTree, isPanelOpen, timeSeriesTrees])
 
-  const currentConfig = mapConfigs[dataSource]
+
+  // ビューポート変更ハンドラー
+  const handleViewportChange = useCallback((bounds: L.LatLngBounds) => {
+    setMapBounds(bounds)
+  }, [])
+
+  // ビューポート内のデータをフィルタリング
+  const getTreesInViewport = useMemo(() => {
+    return (trees: TimeSeriesTreeMarkerData[]) => {
+      if (!mapBounds) return trees
+      return trees.filter(tree => 
+        mapBounds.contains([tree.latitude, tree.longitude])
+      )
+    }
+  }, [mapBounds])
 
   return (
     <div className="App">
       <header className="App-header">
         <div className="header-content">
           <h1>ナラ枯れ・マツ枯れ情報マップ</h1>
-          <DataSourceSelector
-            selectedSource={dataSource}
-            onSourceChange={handleDataSourceChange}
-            loading={loading}
-          />
         </div>
         {loading && <div className="status-message">データ読み込み中...</div>}
         {error && <div className="status-message error">{error}</div>}
@@ -246,75 +198,53 @@ function App() {
       <main className="App-main">
         <Map
           className="map-container"
-          center={currentConfig.center}
-          zoom={currentConfig.zoom}
-          key={dataSource} // Force re-render when data source changes
+          center={mapConfig.center}
+          zoom={mapConfig.zoom}
           onMapClick={handleMapClick}
           flyToLocation={flyToLocation}
+          onViewportChange={handleViewportChange}
         >
-          {!loading && !error && dataSource === 'tokyo' && (
-            <TreeMarkers trees={tokyoTrees} onMarkerClick={handleTokyoMarkerClick} />
-          )}
-          {!loading && !error && dataSource === 'jindai' && (
-            <JindaiTreeMarkers trees={jindaiTrees} onMarkerClick={handleJindaiMarkerClick} />
-          )}
-          {!loading && !error && dataSource === 'timeseries' && (
+          {!loading && !error && (
             <>
               <TimeSeriesTreeMarkers
                 trees={filteredTimeSeriesTrees}
                 onMarkerClick={handleTimeSeriesMarkerClick}
                 selectedTree={selectedTimeSeriesTree}
               />
-              {showClusters && <DiseaseCluster clusters={clusters} year={selectedYear} />}
+              {showClusters && <SVGClusterOverlay clusters={clusters} year={selectedYear} overlapThreshold={overlapThreshold} />}
             </>
           )}
         </Map>
-        {dataSource === 'timeseries' && (
-          <RightSidebar
-            trees={advancedFilteredTrees.length > 0 ? advancedFilteredTrees : timeSeriesTrees}
-            availableYears={availableYears}
-            selectedYear={selectedYear}
-            onFilterChange={setAdvancedFilteredTrees}
-            showClusters={showClusters}
-            onToggleClusters={setShowClusters}
-            showOnlyProblematicTrees={showOnlyProblematicTrees}
-            onToggleProblematicFilter={setShowOnlyProblematicTrees}
-            clusterDistance={clusterDistance}
-            onDistanceChange={setClusterDistance}
-            filteredTrees={filteredTimeSeriesTrees}
-            clusters={clusters}
-          />
-        )}
+        <RightSidebar
+          trees={advancedFilteredTrees.length > 0 ? advancedFilteredTrees : timeSeriesTrees}
+          availableYears={availableYears}
+          selectedYear={selectedYear}
+          onFilterChange={setAdvancedFilteredTrees}
+          showClusters={showClusters}
+          onToggleClusters={setShowClusters}
+          showOnlyProblematicTrees={showOnlyProblematicTrees}
+          onToggleProblematicFilter={setShowOnlyProblematicTrees}
+          clusterDistance={clusterDistance}
+          onDistanceChange={setClusterDistance}
+          overlapThreshold={overlapThreshold}
+          onOverlapThresholdChange={setOverlapThreshold}
+          filteredTrees={useMemo(() => getTreesInViewport(filteredTimeSeriesTrees), [getTreesInViewport, filteredTimeSeriesTrees])}
+          clusters={clusters}
+          mapBounds={mapBounds}
+          allTreesInViewport={useMemo(() => getTreesInViewport(advancedFilteredTrees.length > 0 ? advancedFilteredTrees : timeSeriesTrees), [getTreesInViewport, advancedFilteredTrees, timeSeriesTrees])}
+        />
       </main>
-      {dataSource === 'tokyo' && (
-        <TreeDetailPanel
-          tree={selectedTokyoTree}
-          isOpen={isPanelOpen}
-          onClose={handlePanelClose}
-        />
-      )}
-      {dataSource === 'jindai' && (
-        <JindaiTreeDetailPanel
-          tree={selectedJindaiTree}
-          isOpen={isPanelOpen}
-          onClose={handlePanelClose}
-        />
-      )}
-      {dataSource === 'timeseries' && (
-        <>
-          <TimeSeriesTreeDetailPanel
-            tree={selectedTimeSeriesTree}
-            isOpen={isPanelOpen}
-            onClose={handlePanelClose}
-          />
-          <YearSelector
-            years={availableYears}
-            selectedYear={selectedYear}
-            onYearChange={handleYearChange}
-            loading={loading}
-          />
-        </>
-      )}
+      <TimeSeriesTreeDetailPanel
+        tree={selectedTimeSeriesTree}
+        isOpen={isPanelOpen}
+        onClose={handlePanelClose}
+      />
+      <YearSelector
+        years={availableYears}
+        selectedYear={selectedYear}
+        onYearChange={handleYearChange}
+        loading={loading}
+      />
     </div>
   )
 }

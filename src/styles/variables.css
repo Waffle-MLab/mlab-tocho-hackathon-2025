@@ -16,6 +16,8 @@
   /* ホバー状態用の明るいバリエーション */
   --color-primary-dark: #161e2c;
   /* プレス状態用の暗いバリエーション */
+  --color-primary-soft: #64748b;
+  /* パネル内テキスト用の薄い紺色 */
 
   /* ===================
    * TREE CONDITION COLORS
@@ -114,6 +116,8 @@
    */
   --font-size-xs: 0.75rem;
   /* 12px - キャプション・バッジ */
+  --font-size-xxs: 0.625rem;
+  /* 10px - 凡例・小さなラベル用 */
   --font-size-sm: 0.875rem;
   /* 14px - 小さなボタン・ラベル */
   --font-size-base: 1rem;
@@ -124,6 +128,18 @@
   /* 20px - タイトル */
   --font-size-2xl: 1.5rem;
   /* 24px - 大きなタイトル */
+
+  /* ===================
+   * LAYOUT DIMENSIONS
+   * ===================
+   * アプリケーションのレイアウト寸法
+   */
+  --header-height: 70px;
+  /* ヘッダーの高さ */
+  --footer-height: 80px;
+  /* フッターの高さ */
+  --footer-height-mobile: 100px;
+  /* モバイルフッターの高さ */
 
   /* ===================
    * Z-INDEX LAYERS

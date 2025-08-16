@@ -1,8 +1,7 @@
 import { useEffect, ReactNode, useRef } from 'react'
 import { MapContainer, TileLayer, useMap } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
-import './CustomMarker.css'
-import { setGlobalMapInstance } from './ZoomControls'
+import { setGlobalMapInstance } from '../utils/mapInstance'
 import L from 'leaflet'
 
 // Fix for default markers in react-leaflet
@@ -20,10 +19,15 @@ interface MapProps {
   children?: ReactNode
   onMapClick?: () => void
   flyToLocation?: [number, number] | null
+  onViewportChange?: (bounds: L.LatLngBounds) => void
 }
 
 // Component to handle map click events and fly-to functionality
-const MapController = ({ onMapClick, flyToLocation }: { onMapClick?: () => void, flyToLocation?: [number, number] | null }) => {
+const MapController = ({ onMapClick, flyToLocation, onViewportChange }: { 
+  onMapClick?: () => void, 
+  flyToLocation?: [number, number] | null,
+  onViewportChange?: (bounds: L.LatLngBounds) => void
+}) => {
   const map = useMap()
 
   // マップインスタンスをグローバルに設定
@@ -53,10 +57,32 @@ const MapController = ({ onMapClick, flyToLocation }: { onMapClick?: () => void,
     }
   }, [map, flyToLocation])
 
+  // ビューポート変更を監視
+  useEffect(() => {
+    if (!onViewportChange) return
+
+    const handleViewportChange = () => {
+      const bounds = map.getBounds()
+      onViewportChange(bounds)
+    }
+
+    // 初回実行
+    handleViewportChange()
+
+    // イベントリスナー追加
+    map.on('moveend', handleViewportChange)
+    map.on('zoomend', handleViewportChange)
+
+    return () => {
+      map.off('moveend', handleViewportChange)
+      map.off('zoomend', handleViewportChange)
+    }
+  }, [map, onViewportChange])
+
   return null
 }
 
-const Map = ({ center = [35.6762, 139.6503], zoom = 10, className, children, onMapClick, flyToLocation }: MapProps) => {
+const Map = ({ center = [35.6762, 139.6503], zoom = 10, className, children, onMapClick, flyToLocation, onViewportChange }: MapProps) => {
   const mapRef = useRef<L.Map | null>(null)
 
   useEffect(() => {
@@ -79,7 +105,7 @@ const Map = ({ center = [35.6762, 139.6503], zoom = 10, className, children, onM
         subdomains="abcd"
         maxZoom={20}
       />
-      <MapController onMapClick={onMapClick} flyToLocation={flyToLocation} />
+      <MapController onMapClick={onMapClick} flyToLocation={flyToLocation} onViewportChange={onViewportChange} />
       {/* <ZoomControls isExpanded={sidebarExpanded} /> */}
       {children}
     </MapContainer>

@@ -1,5 +1,5 @@
 import { Polygon, Popup } from 'react-leaflet'
-import { ClusterData, getClusterPolygon } from '../utils/clustering'
+import { ClusterData } from '../utils/clustering'
 
 interface DiseaseClusterProps {
   clusters: ClusterData[]
@@ -10,7 +10,8 @@ const DiseaseCluster = ({ clusters, year }: DiseaseClusterProps) => {
   return (
     <>
       {clusters.map((cluster) => {
-        const polygon = getClusterPolygon(cluster)
+        // 簡単な円形近似でポリゴンを作成
+        const polygon = createSimplePolygon(cluster)
         
         // Count trees by condition
         const conditionCounts = cluster.trees.reduce((acc, tree) => {
@@ -68,6 +69,28 @@ const DiseaseCluster = ({ clusters, year }: DiseaseClusterProps) => {
       })}
     </>
   )
+}
+
+// 簡単な円形ポリゴン作成関数
+const createSimplePolygon = (cluster: ClusterData): [number, number][] => {
+  if (cluster.circles.length === 0) return []
+  
+  // 最初の円を基準にした簡単な円形ポリゴン
+  const circle = cluster.circles[0]
+  const points: [number, number][] = []
+  const numPoints = 16
+  
+  // メートルを度に変換（簡易）
+  const radiusInDegrees = circle.radius / 111320
+  
+  for (let i = 0; i < numPoints; i++) {
+    const angle = (i * 2 * Math.PI) / numPoints
+    const lat = circle.center[0] + radiusInDegrees * Math.cos(angle)
+    const lng = circle.center[1] + radiusInDegrees * Math.sin(angle) / Math.cos(circle.center[0] * Math.PI / 180)
+    points.push([lat, lng])
+  }
+  
+  return points
 }
 
 export default DiseaseCluster

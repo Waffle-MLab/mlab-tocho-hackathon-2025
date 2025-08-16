@@ -43,6 +43,9 @@ const createTimeSeriesTreeIcon = (condition: string, year: number, isSelected: b
       opacity: ${opacity};
       transition: all 0.3s ease;
       transform: ${isSelected ? 'scale(1.3)' : 'scale(1)'};
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-drag: none;
       ${glowEffect}
     "></div>`,
     className: `custom-tree-marker${isSelected ? ' selected' : ''}`,
@@ -61,8 +64,15 @@ const TimeSeriesTreeMarkers = ({ trees, onMarkerClick, selectedTree }: TimeSerie
             key={tree.id}
             position={[tree.latitude, tree.longitude]}
             icon={createTimeSeriesTreeIcon(tree.condition, tree.year, isSelected)}
+            draggable={false}
+            keyboard={false}
+            bubblingMouseEvents={false}
             eventHandlers={{
-              click: () => onMarkerClick(tree),
+              click: (e) => {
+                e.originalEvent?.stopPropagation()
+                e.originalEvent?.preventDefault()
+                onMarkerClick(tree)
+              },
             }}
             zIndexOffset={isSelected ? 1000 : 0}
           />
