@@ -128,16 +128,6 @@
   position: relative;
 }
 
-.detail-section h3::after {
-  content: '';
-  position: absolute;
-  bottom: -3px;
-  left: 0;
-  width: 40%;
-  height: 3px;
-  background: var(--color-main-light);
-}
-
 .detail-section h4 {
   font-size: var(--font-lg);
   font-weight: 600;
@@ -153,14 +143,8 @@
   align-items: center;
   padding: var(--space-sm) var(--space-md);
   margin-bottom: var(--space-xs);
-  background: var(--color-main-pale);
   border-radius: var(--radius-md);
   transition: all var(--transition-fast);
-}
-
-.detail-item:hover {
-  background: var(--color-main-pale);
-  transform: translateX(4px);
 }
 
 .detail-item label {
@@ -227,8 +211,8 @@
   align-items: center;
   gap: var(--item-gap);
   padding: var(--space-md) var(--space-lg);
-  background: var(--color-main-pale);
-  border: none;
+  border: 1px solid var(--color-main);
+  border-radius: var(--radius-md);
   cursor: pointer;
   user-select: none;
   transition: all var(--transition-fast);
@@ -238,9 +222,6 @@
   text-align: left;
 }
 
-.section-toggle:hover {
-  background: var(--color-main-pale);
-}
 
 .toggle-icon {
   color: var(--color-main);
@@ -277,51 +258,50 @@
 /* Timeline Styles */
 .timeline {
   position: relative;
-  margin: var(--space-lg) 0;
+  margin: var(--space-lg) var(--space-md) var(--space-3xl) var(--space-md);
 }
 
-.timeline::before {
-  content: '';
-  position: absolute;
-  left: 30px;
-  top: 0;
-  bottom: 0;
-  width: 3px;
-  background: linear-gradient(to bottom, var(--color-main), var(--color-main-light));
-  border-radius: 2px;
-}
 
 .timeline-item {
   position: relative;
   margin-bottom: var(--space-xl);
   display: flex;
   align-items: flex-start;
-  gap: var(--space-lg);
+  gap: var(--space-sm);
+}
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: 3px;
+  top: 25px;
+  bottom: var(--space-xl);
+  width: 3px;
+  background: var(--color-main);
+  border-radius: 2px;
+  height: 100%;
+}
+
+.timeline-item:last-child::before {
+  bottom: 50%;
 }
 
 .timeline-marker {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
   min-width: 100px;
 }
 
 .timeline-dot {
-  width: 16px;
-  height: 16px;
+  margin-top: 7px;
+  width: 10px;
+  height: 10px;
   background: var(--color-main);
   border-radius: 50%;
-  border: 4px solid white;
+  border: 2px solid white;
   box-shadow: 0 0 0 3px var(--color-main), var(--shadow-md);
   z-index: 2;
   margin-bottom: var(--space-sm);
   transition: all var(--transition-fast);
-}
-
-.timeline-item:hover .timeline-dot {
-  transform: scale(1.2);
-  box-shadow: 0 0 0 4px var(--color-main), var(--shadow-lg);
 }
 
 .timeline-date {
@@ -330,38 +310,47 @@
   font-weight: 600;
   text-align: center;
   background: var(--color-background);
-  padding: var(--space-xs) var(--space-sm);
+  padding: var(--space-xs) var(--space-sm) var(--space-xs) var(--space-sm);
   border-radius: var(--radius-sm);
-  border: 1px solid var(--color-border);
   white-space: nowrap;
 }
 
 .timeline-content {
   flex: 1;
-  background: var(--color-main-pale);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   padding: var(--content-padding);
-  margin-top: -8px;
+  margin-left: calc(var(--space-sm) * -1);
+  margin-top: calc(var(--space-sm) * -1);
   box-shadow: var(--shadow-sm);
   transition: all var(--transition-fast);
   position: relative;
+  background: var(--color-neutral-50);
 }
 
-.timeline-content::before {
+.timeline-content::before,
+.timeline-content::after {
   content: '';
   position: absolute;
-  left: -12px;
-  top: 20px;
+  top: 10px;
   width: 0;
   height: 0;
-  border-top: 8px solid transparent;
-  border-bottom: 8px solid transparent;
-  border-right: 12px solid var(--color-main-pale);
 }
 
-.timeline-item:hover .timeline-content {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-lg);
+/* 外側の三角形（枠線） */
+.timeline-content::before {
+  left: -10px;
+  border-top: 8px solid transparent;
+  border-bottom: 8px solid transparent;
+  border-right: 11px solid var(--color-border);
+}
+
+/* 内側の三角形（背景色） */
+.timeline-content::after {
+  left: -8px;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-right: 12px solid var(--color-neutral-50);
 }
 
 .timeline-action {
@@ -396,7 +385,6 @@
 }
 
 .photo-thumbnail:hover {
-  transform: scale(1.1) rotate(2deg);
   box-shadow: var(--shadow-lg);
   border-color: var(--color-main);
 }
@@ -407,13 +395,14 @@
   overflow-y: auto;
   margin-bottom: var(--space-lg);
   padding: var(--space-md);
-  background: var(--color-main-pale);
+  background: var(--color-neutral-50);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
 }
 
 .chat-item {
   display: flex;
-  gap: var(--space-md);
+  gap: var(--space-sm);
   margin-bottom: var(--space-lg);
   align-items: flex-start;
 }
@@ -468,31 +457,6 @@
   border: 1px solid var(--color-border);
 }
 
-.chat-bubble::before {
-  content: '';
-  position: absolute;
-  top: 12px;
-  left: -8px;
-  width: 0;
-  height: 0;
-  border-top: 8px solid transparent;
-  border-bottom: 8px solid transparent;
-  border-right: 8px solid var(--color-background);
-}
-
-.chat-bubble::after {
-  content: '';
-  position: absolute;
-  top: 12px;
-  left: -9px;
-  width: 0;
-  height: 0;
-  border-top: 8px solid transparent;
-  border-bottom: 8px solid transparent;
-  border-right: 8px solid var(--color-border);
-  z-index: -1;
-}
-
 .chat-message {
   font-size: var(--font-label);
   color: var(--color-text);
@@ -501,9 +465,9 @@
 }
 
 .chat-input-container {
-  border-top: 2px solid var(--color-border);
+  border: 2px solid var(--color-border);
   padding-top: var(--space-lg);
-  background: var(--color-main-pale);
+  background: var(--color-neutral-50);
   border-radius: var(--radius-lg);
   padding: var(--content-padding);
 }
@@ -521,9 +485,10 @@
   border-radius: var(--radius-lg);
   font-size: var(--font-label);
   resize: none;
-  min-height: 44px;
+  min-height: 40px;
   font-family: inherit;
   transition: all var(--transition-fast);
+  background-color: var(--color-white);
 }
 
 .chat-input:focus {
@@ -533,6 +498,8 @@
 }
 
 .chat-send-button {
+  margin-top: 10px;
+  margin-bottom: 10px;
   padding: var(--button-padding);
   background: var(--bg-main);
   color: var(--text-on-main);
@@ -586,17 +553,17 @@
 
 .photo-modal-close {
   position: absolute;
-  top: var(--space-md);
-  right: var(--space-md);
+  width: 25px;
+  height: 25px;
+  top: var(--space-sm);
+  right: var(--space-sm);
   background: rgba(0, 0, 0, 0.7);
   border: none;
   color: white;
-  font-size: var(--font-xl);
+  font-size: var(--font-xs);
   cursor: pointer;
   padding: var(--space-sm);
   border-radius: 50%;
-  width: 44px;
-  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -637,8 +604,8 @@
     margin-left: 0;
   }
 
-  .timeline::before {
-    left: 20px;
+  .timeline-item::before {
+    left: 10px;
   }
 
   .timeline-marker {
