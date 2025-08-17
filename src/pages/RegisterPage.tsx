@@ -1,21 +1,20 @@
+import { useState, useCallback, useEffect } from 'react'
+import L from 'leaflet'
+import { Marker } from 'react-leaflet'
 
-import { useState, useCallback, useEffect } from 'react';
-import L from 'leaflet';
-import { Marker } from 'react-leaflet';
+import Header from '../components/Header'
+import Map from '../components/Map'
+import RegisterForm from '../components/RegisterForm'
+import StagedTreesList from '../components/StagedTreesList'
+import { TimeSeriesTreeMarkerData } from '../types/tree'
+import { getExistingTrees } from '../repositories/treeRepository'
 
-import Header from '../components/Header';
-import Map from '../components/Map';
-import RegisterForm from '../components/RegisterForm';
-import StagedTreesList from '../components/StagedTreesList';
-import { TimeSeriesTreeMarkerData } from '../types/tree';
-import { getExistingTrees } from '../repositories/treeRepository';
-
-import '../App.css';
-import '../components/Map.css';
-import './RegisterPage.css';
+import '../App.css'
+import '../components/Map.css'
+import './RegisterPage.css'
 
 // Define a type for the staged tree, including the temporary ID
-type StagedTree = Partial<TimeSeriesTreeMarkerData> & { tempId: number };
+type StagedTree = Partial<TimeSeriesTreeMarkerData> & { tempId: number }
 
 // Custom icon for existing trees in the DB (grey)
 const existingTreeIcon = new L.DivIcon({
@@ -23,7 +22,7 @@ const existingTreeIcon = new L.DivIcon({
   className: 'custom-div-icon',
   iconSize: [24, 24],
   iconAnchor: [12, 24],
-});
+})
 
 // Custom icon for staged trees (green)
 const stagedTreeIcon = new L.DivIcon({
@@ -31,7 +30,7 @@ const stagedTreeIcon = new L.DivIcon({
   className: 'custom-div-icon',
   iconSize: [30, 30],
   iconAnchor: [15, 30],
-});
+})
 
 // Custom icon for the currently selected/editing coordinate (orange)
 const selectedCoordIcon = new L.DivIcon({
@@ -39,48 +38,66 @@ const selectedCoordIcon = new L.DivIcon({
   className: 'custom-div-icon',
   iconSize: [30, 30],
   iconAnchor: [15, 30],
-});
+})
 
 function RegisterPage() {
-  const [existingTrees, setExistingTrees] = useState<TimeSeriesTreeMarkerData[]>([]);
-  const [stagedTrees, setStagedTrees] = useState<StagedTree[]>([]);
-  const [coordinates, setCoordinates] = useState<L.LatLng | null>(null);
-  const [editingTree, setEditingTree] = useState<StagedTree | null>(null);
+  const [existingTrees, setExistingTrees] = useState<
+    TimeSeriesTreeMarkerData[]
+  >([])
+  const [stagedTrees, setStagedTrees] = useState<StagedTree[]>([])
+  const [coordinates, setCoordinates] = useState<L.LatLng | null>(null)
+  const [editingTree, setEditingTree] = useState<StagedTree | null>(null)
+  const [showBulkUploadPopup, setShowBulkUploadPopup] = useState(false)
 
   useEffect(() => {
     const fetchTrees = async () => {
       try {
-        const trees = await getExistingTrees();
-        setExistingTrees(trees);
+        const trees = await getExistingTrees()
+        setExistingTrees(trees)
       } catch (error) {
-        console.error("Failed to fetch existing trees:", error);
-        alert('既存の樹木データの読み込みに失敗しました。');
+        console.error('Failed to fetch existing trees:', error)
+        alert('既存の樹木データの読み込みに失敗しました。')
       }
-    };
-    fetchTrees();
-  }, []);
+    }
+    fetchTrees()
+  }, [])
 
   const mapConfig = {
     center: [35.6718, 139.5503] as [number, number],
     zoom: 16,
-  };
+  }
 
-  const handleMapClick = useCallback((e: L.LeafletMouseEvent) => {
-    if (editingTree) {
-      // If editing, update the coordinates of the tree being edited
-      const updatedTree = { ...editingTree, latitude: e.latlng.lat, longitude: e.latlng.lng };
-      setStagedTrees(stagedTrees.map(t => t.tempId === editingTree.tempId ? updatedTree : t));
-      setEditingTree(updatedTree);
-    } else {
-      // If not editing, set coordinates for a new tree
-      setCoordinates(e.latlng);
-    }
-  }, [editingTree, stagedTrees]);
+  const handleMapClick = useCallback(
+    (e: L.LeafletMouseEvent) => {
+      if (editingTree) {
+        // If editing, update the coordinates of the tree being edited
+        const updatedTree = {
+          ...editingTree,
+          latitude: e.latlng.lat,
+          longitude: e.latlng.lng,
+        }
+        setStagedTrees(
+          stagedTrees.map((t) =>
+            t.tempId === editingTree.tempId ? updatedTree : t
+          )
+        )
+        setEditingTree(updatedTree)
+      } else {
+        // If not editing, set coordinates for a new tree
+        setCoordinates(e.latlng)
+      }
+    },
+    [editingTree, stagedTrees]
+  )
 
   const handleSaveTree = (tree: Partial<TimeSeriesTreeMarkerData>) => {
     if (editingTree) {
       // Update existing tree details (form fields other than lat/lng)
-      setStagedTrees(stagedTrees.map(t => t.tempId === editingTree.tempId ? { ...editingTree, ...tree } : t));
+      setStagedTrees(
+        stagedTrees.map((t) =>
+          t.tempId === editingTree.tempId ? { ...editingTree, ...tree } : t
+        )
+      )
     } else {
       // Add new tree with a temporary ID
       const newTree: StagedTree = {
@@ -88,44 +105,44 @@ function RegisterPage() {
         latitude: coordinates!.lat,
         longitude: coordinates!.lng,
         tempId: Date.now(),
-      };
-      setStagedTrees([...stagedTrees, newTree]);
+      }
+      setStagedTrees([...stagedTrees, newTree])
     }
-    setEditingTree(null);
-    setCoordinates(null);
-  };
+    setEditingTree(null)
+    setCoordinates(null)
+  }
 
   const handleEditTree = (tree: StagedTree) => {
-    setEditingTree(tree);
-    setCoordinates(null); // Clear new-point-coordinates when starting to edit
-  };
+    setEditingTree(tree)
+    setCoordinates(null) // Clear new-point-coordinates when starting to edit
+  }
 
   const handleDeleteTree = (tempId: number) => {
-    setStagedTrees(stagedTrees.filter(t => t.tempId !== tempId));
+    setStagedTrees(stagedTrees.filter((t) => t.tempId !== tempId))
     if (editingTree && editingTree.tempId === tempId) {
-      setEditingTree(null);
-      setCoordinates(null);
+      setEditingTree(null)
+      setCoordinates(null)
     }
-  };
+  }
 
   const clearEditing = () => {
-    setEditingTree(null);
-    setCoordinates(null);
+    setEditingTree(null)
+    setCoordinates(null)
   }
-  
+
   const handleFinalSubmit = () => {
     if (stagedTrees.length === 0) {
-      alert('登録する樹木がありません。');
-      return;
+      alert('登録する樹木がありません。')
+      return
     }
-    alert(`${stagedTrees.length}本の樹木データが登録されました（仮）`);
+    alert(`${stagedTrees.length}本の樹木データが登録されました（仮）`)
     // Here you would typically send the data to a server
-    setStagedTrees([]);
+    setStagedTrees([])
   }
 
   return (
     <div className="App">
-      <Header title="樹木データの登録" />
+      <Header title="樹木の登録" />
       <main className="App-main register-page-main">
         <Map
           className="map-container"
@@ -134,34 +151,59 @@ function RegisterPage() {
           onMapClick={handleMapClick}
         >
           {/* Display existing trees from DB */}
-          {existingTrees.map(tree => (
-            <Marker 
-              key={tree.treeId} 
-              position={[tree.latitude, tree.longitude]} 
-              icon={existingTreeIcon} 
+          {existingTrees.map((tree) => (
+            <Marker
+              key={tree.treeId}
+              position={[tree.latitude, tree.longitude]}
+              icon={existingTreeIcon}
             />
           ))}
 
           {/* Display trees being staged for registration */}
-          {stagedTrees.map(tree => (
-            <Marker 
-              key={tree.tempId} 
-              position={[tree.latitude!, tree.longitude!]} 
-              icon={editingTree?.tempId === tree.tempId ? selectedCoordIcon : stagedTreeIcon} 
+          {stagedTrees.map((tree) => (
+            <Marker
+              key={tree.tempId}
+              position={[tree.latitude!, tree.longitude!]}
+              icon={
+                editingTree?.tempId === tree.tempId
+                  ? selectedCoordIcon
+                  : stagedTreeIcon
+              }
             />
           ))}
 
           {/* Display marker for new coordinate selection */}
-          {coordinates && !editingTree && <Marker position={coordinates} icon={selectedCoordIcon} />}
+          {coordinates && !editingTree && (
+            <Marker position={coordinates} icon={selectedCoordIcon} />
+          )}
         </Map>
+        <button
+          onClick={() => setShowBulkUploadPopup(true)}
+          className="map-bulk-upload-button"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="white"
+            width="24px"
+            height="24px"
+          >
+            <path d="M0 0h24v24H0z" fill="none" />
+            <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+          </svg>
+        </button>
         <div className="sidebar">
-          <RegisterForm 
-            coordinates={editingTree ? new L.LatLng(editingTree.latitude!, editingTree.longitude!) : coordinates} 
+          <RegisterForm
+            coordinates={
+              editingTree
+                ? new L.LatLng(editingTree.latitude!, editingTree.longitude!)
+                : coordinates
+            }
             onSave={handleSaveTree}
             editingTree={editingTree}
             clearEditing={clearEditing}
           />
-          <StagedTreesList 
+          <StagedTreesList
             stagedTrees={stagedTrees}
             onEdit={handleEditTree}
             onDelete={handleDeleteTree}
@@ -172,9 +214,29 @@ function RegisterPage() {
             </button>
           </div>
         </div>
+
+        {showBulkUploadPopup && (
+          <div className="bulk-upload-popup-overlay">
+            <div className="bulk-upload-popup-content">
+              <h3>ファイルから一括登録</h3>
+              <input type="file" accept=".csv" />
+              <div className="popup-buttons">
+                <button className="bulk-upload-button">
+                  ファイルから樹木を登録
+                </button>
+                <button
+                  onClick={() => setShowBulkUploadPopup(false)}
+                  className="cancel-button"
+                >
+                  キャンセル
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </main>
     </div>
-  );
+  )
 }
 
-export default RegisterPage;
+export default RegisterPage
