@@ -9,7 +9,6 @@ interface FilterSettings {
 
 interface AdvancedFilterProps {
   trees: TimeSeriesTreeMarkerData[]
-  availableYears: number[]
   onFilterChange: (filteredTrees: TimeSeriesTreeMarkerData[]) => void
   showClusters?: boolean
   onToggleClusters?: (show: boolean) => void
@@ -23,7 +22,6 @@ interface AdvancedFilterProps {
 
 const AdvancedFilter = ({
   trees,
-  availableYears,
   onFilterChange,
   showClusters = true,
   onToggleClusters,
