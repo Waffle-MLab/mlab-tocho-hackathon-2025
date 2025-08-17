@@ -19,3 +19,52 @@
   width: 100%;
   border-radius: 0;
 }
+
+.map-container .leaflet-tile-pane {
+  filter:
+    saturate(0.2)
+    /* 彩度を下げて色を薄く */
+    contrast(0.9)
+    /* コントラストを下げて柔らかく */
+    brightness(1.1)
+    /* 明度を上げて明るく */
+    grayscale(0.2);
+  /* 10%グレースケール化で色味を抑制 */
+}
+
+
+/* OpenStreetMapライセンス表記を年代コントローラーの上に表示 */
+.map-container .leaflet-control-attribution {
+  position: absolute !important;
+  bottom: calc(var(--footer-height) + var(--space-sm)) !important;
+  right: var(--space-sm) !important;
+  left: auto !important;
+  background: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(5px) !important;
+  border-radius: var(--radius-md) !important;
+  padding: var(--space-xs) var(--space-sm) !important;
+  font-size: var(--font-xs) !important;
+  box-shadow: var(--shadow-sm) !important;
+  width: 350px !important;
+  z-index: var(--z-dropdown) !important;
+  line-height: 1.3 !important;
+}
+
+.map-container .leaflet-control-attribution a {
+  color: var(--color-main) !important;
+  text-decoration: none !important;
+}
+
+.map-container .leaflet-control-attribution a:hover {
+  text-decoration: underline !important;
+}
+
+/* モバイル対応 */
+@media (max-width: 768px) {
+  .map-container .leaflet-control-attribution {
+    bottom: calc(var(--footer-height-mobile) + var(--space-sm)) !important;
+    font-size: var(--font-xxs) !important;
+    max-width: 250px !important;
+    padding: var(--space-xs) !important;
+  }
+}

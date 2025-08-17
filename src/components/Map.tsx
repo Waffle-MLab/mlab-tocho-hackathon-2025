@@ -100,10 +100,10 @@ const Map = ({ center = [35.6762, 139.6503], zoom = 10, className, children, onM
       ref={mapRef}
     >
       <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-        url="https://{s}.basemaps.cartocdn.com/rastertiles/light_all/{z}/{x}/{y}{r}.png"
-        subdomains="abcd"
-        maxZoom={20}
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, <a href="https://opendatacommons.org/licenses/odbl/">ODbL</a>, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        subdomains={['a', 'b', 'c']}
+        maxZoom={19}
       />
       <MapController onMapClick={onMapClick} flyToLocation={flyToLocation} onViewportChange={onViewportChange} />
       {/* <ZoomControls isExpanded={sidebarExpanded} /> */}
