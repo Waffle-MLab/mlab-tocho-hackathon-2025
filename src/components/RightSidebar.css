@@ -3,10 +3,9 @@
 
 .right-sidebar {
   position: fixed;
-  top: var(--header-height);
   right: 0;
   width: 60px;
-  top: 90px;
+  top: calc(var(--header-height) + var(--space-md));
   background-color: var(--color-white);
   border: 1px solid var(--color-main);
   border-right: none;
@@ -14,7 +13,7 @@
   box-shadow: var(--shadow-lg);
   z-index: var(--z-dropdown);
   transition: all var(--transition-normal) ease-out;
-  max-height: calc(100vh - var(--header-height) - var(--footer-height) - 20px);
+  max-height: calc(100vh - var(--header-height) - var(--footer-height) - var(--space-md)*2);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -85,6 +84,9 @@
   }
 }
 
+.sidebar-section:last-child {
+  margin-bottom: 0;
+}
 
 /* ===================================
  * SIDEBAR PANEL OVERRIDES
@@ -101,9 +103,15 @@
   border-radius: 0;
   box-shadow: none;
   margin: 0;
-  border-bottom: 1px solid var(--color-border);
+
   flex-shrink: 0;
 }
+
+.sidebar-content .distance-control {
+  padding-top: var(--space-md);
+  padding-bottom: var(--space-md);
+}
+
 
 /* パネルコンテンツの基本設定 */
 .sidebar-content .panel-content,

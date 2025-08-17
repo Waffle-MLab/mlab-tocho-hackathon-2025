@@ -4,7 +4,6 @@ import { TimeSeriesTreeMarkerData } from '../types/tree'
 import { ClusterData } from '../utils/clustering'
 import StatisticsPanel from './StatisticsPanel'
 import AdvancedFilter from './AdvancedFilter'
-import DistanceControl from './DistanceControl'
 import ExportControls from './ExportControls'
 import ZoomControls from './ZoomControls'
 import './RightSidebar.css'
@@ -80,23 +79,18 @@ const RightSidebar = ({
           <div className="sidebar-section">
             <AdvancedFilter 
               trees={trees}
-              availableYears={availableYears}
               onFilterChange={onFilterChange}
               showClusters={showClusters}
               onToggleClusters={onToggleClusters}
               showOnlyProblematicTrees={showOnlyProblematicTrees}
               onToggleProblematicFilter={onToggleProblematicFilter}
-            />
-          </div>
-          
-          <div className="sidebar-section">
-            <DistanceControl 
-              distance={clusterDistance}
+              clusterDistance={clusterDistance}
               onDistanceChange={onDistanceChange}
               overlapThreshold={overlapThreshold}
               onOverlapThresholdChange={onOverlapThresholdChange}
             />
           </div>
+          
           
           <div className="sidebar-section">
             <ExportControls 

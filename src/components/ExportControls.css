@@ -40,8 +40,9 @@
   transition: background-color var(--transition-fast);
 }
 
-.control-header:hover {
-  background: var(--color-main-pale);
+.control-header:hover,
+.export-controls.expanded .control-header {
+  background: var(--color-neutral-100);
 }
 
 .control-icon {
@@ -53,7 +54,7 @@
   font-weight: 600;
   color: inherit;
   flex: 1;
-  font-size: var(--font-title);
+  font-size: var(--font-sm);
 }
 
 .control-toggle {
@@ -62,6 +63,7 @@
   font-size: var(--font-lg);
   width: 20px;
   text-align: center;
+  margin-left: auto;
 }
 
 .control-content {
