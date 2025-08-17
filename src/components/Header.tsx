@@ -30,7 +30,7 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
             to="/add-record"
             className={location.pathname === '/add-record' ? 'active' : ''}
           >
-            樹木記録管理
+            作業記録管理
           </Link>
         </nav>
       </div>

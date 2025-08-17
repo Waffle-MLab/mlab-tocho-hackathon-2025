@@ -135,7 +135,7 @@ function AddRecordPage() {
 
   return (
     <div className="App">
-      <Header title="樹木記録の追加" />
+      <Header title="作業記録管理" />
       <main className="App-main add-record-page-main">
         <Map
           className="map-container"
