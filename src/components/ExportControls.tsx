@@ -34,6 +34,14 @@ const ExportControls = ({ trees, clusters, selectedYear, viewportTrees, mapBound
         (el as HTMLElement).style.display = 'none'
       })
 
+      // Apply gray filter to map tiles for export (same as web view)
+      const tilePane = document.querySelector('.leaflet-tile-pane') as HTMLElement
+      let originalFilter = ''
+      if (tilePane) {
+        originalFilter = tilePane.style.filter
+        tilePane.style.filter = 'saturate(0.2) contrast(0.9) brightness(1.1) grayscale(0.2)'
+      }
+
       // Add viewport info overlay
       const infoOverlay = document.createElement('div')
       infoOverlay.style.cssText = `
@@ -57,6 +65,7 @@ const ExportControls = ({ trees, clusters, selectedYear, viewportTrees, mapBound
         <div><strong>ナラ枯れ・マツ枯れ情報マップ ${selectedYear}年</strong></div>
         <div>${boundsInfo}</div>
         <div>樹木数: ${viewportTrees?.length || 0}本 | 出力日時: ${new Date().toLocaleString('ja-JP')}</div>
+        <div style="margin-top: 4px; font-size: 10px; color: #666;">© OpenStreetMap contributors (https://www.openstreetmap.org/copyright)<br>ODbL (https://opendatacommons.org/licenses/odbl/) | CC-BY-SA (https://creativecommons.org/licenses/by-sa/2.0/)</div>
       `
       mapContainer.appendChild(infoOverlay)
 
@@ -72,6 +81,11 @@ const ExportControls = ({ trees, clusters, selectedYear, viewportTrees, mapBound
       uiElements.forEach(el => {
         (el as HTMLElement).style.display = ''
       })
+
+      // Restore original map filter
+      if (tilePane) {
+        tilePane.style.filter = originalFilter
+      }
 
       // Create download link
       const link = document.createElement('a')
@@ -456,7 +470,7 @@ ${reportData.clusters.clusterDetails
       {isExpanded && (
         <div className="control-content">
           <div className="export-section">
-            <h4>📸 画像出力</h4>
+            <h4>画像出力</h4>
             <button 
               className="export-button image"
               onClick={exportViewportAsImage}
@@ -468,7 +482,7 @@ ${reportData.clusters.clusterDetails
           </div>
 
           <div className="export-section">
-            <h4>🗺️ GIS対応データ出力</h4>
+            <h4>GIS対応データ出力</h4>
             <button 
               className="export-button geojson"
               onClick={exportAsGeoJSON}
@@ -487,7 +501,7 @@ ${reportData.clusters.clusterDetails
           </div>
 
           <div className="export-section">
-            <h4>📊 従来データ出力</h4>
+            <h4>従来データ出力</h4>
             <button 
               className="export-button data"
               onClick={exportDataAsCSV}

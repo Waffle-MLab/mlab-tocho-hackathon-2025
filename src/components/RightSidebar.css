@@ -13,7 +13,7 @@
   box-shadow: var(--shadow-lg);
   z-index: var(--z-dropdown);
   transition: all var(--transition-normal) ease-out;
-  max-height: calc(100vh - var(--header-height) - var(--footer-height) - var(--space-md)*2);
+  max-height: calc(100vh - var(--header-height) - var(--footer-height) - var(--space-md)*4);
   overflow: hidden;
   display: flex;
   flex-direction: column;
