@@ -31,25 +31,25 @@ const TimeSeriesTreeDetailPanel = ({ tree, isOpen, onClose }: TimeSeriesTreeDeta
       date: '2022-04-15', 
       action: '植樹', 
       details: '初回植栽、土壌改良実施',
-      photos: ['/images/sample-tree-1.svg', '/images/sample-tree-2.svg']
+      photos: ['/images/sample1.jpg', '/images/sample1.jpg']
     },
     { 
       date: '2023-06-20', 
       action: '剪定', 
       details: '枝払い、形状整理',
-      photos: ['/images/sample-tree-3.svg']
+      photos: ['/images/sample1.jpg']
     },
     { 
       date: '2024-08-10', 
       action: '病害対応', 
       details: '防虫剤散布、栄養補給',
-      photos: ['/images/sample-tree-1.svg', '/images/sample-tree-4.svg', '/images/sample-tree-2.svg']
+      photos: ['/images/sample1.jpg', '/images/sample1.jpg', '/images/sample1.jpg']
     },
     { 
       date: '2025-01-12', 
       action: '健康診断', 
       details: '定期検査、状態確認',
-      photos: ['/images/sample-tree-3.svg']
+      photos: ['/images/sample1.jpg']
     }
   ]
 
