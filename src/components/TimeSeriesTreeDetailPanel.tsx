@@ -10,9 +10,7 @@ interface TimeSeriesTreeDetailPanelProps {
 
 const TimeSeriesTreeDetailPanel = ({ tree, isOpen, onClose }: TimeSeriesTreeDetailPanelProps) => {
   const [expandedSections, setExpandedSections] = useState({
-    measurement: false,
-    location: false,
-    notes: false
+    parkInfo: false
   })
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
 
@@ -73,88 +71,56 @@ const TimeSeriesTreeDetailPanel = ({ tree, isOpen, onClose }: TimeSeriesTreeDeta
         <div className="detail-section">
           <h3>基本情報（{tree.year}年）</h3>
           <div className="detail-item">
-            <label>番号:</label>
-            <span>{tree.number}</span>
-          </div>
-          <div className="detail-item">
             <label>樹木ID:</label>
             <span>{tree.treeId}</span>
           </div>
           <div className="detail-item">
-            <label>樹種名:</label>
-            <span>{tree.species}</span>
+            <label>緯度:</label>
+            <span>{tree.latitude.toFixed(6)}</span>
           </div>
           <div className="detail-item">
-            <label>状態:</label>
-            <span className={`condition-${tree.condition.replace(/[\s・]/g, '').toLowerCase()}`}>
-              {tree.condition}
-            </span>
+            <label>経度:</label>
+            <span>{tree.longitude.toFixed(6)}</span>
           </div>
 
-          {/* 測定データ - 折りたたみ可能 */}
+          {/* 神代植物公園情報 - 折りたたみ可能 */}
           <div className="collapsible-section">
             <button 
               className="section-toggle" 
-              onClick={() => toggleSection('measurement')}
-              aria-expanded={expandedSections.measurement}
+              onClick={() => toggleSection('parkInfo')}
+              aria-expanded={expandedSections.parkInfo}
             >
-              <span className={`toggle-icon ${expandedSections.measurement ? 'expanded' : ''}`}>▶</span>
-              測定データ
+              <span className={`toggle-icon ${expandedSections.parkInfo ? 'expanded' : ''}`}>▶</span>
+              神代植物公園
             </button>
-            {expandedSections.measurement && (
+            {expandedSections.parkInfo && (
               <div className="collapsible-content">
                 <div className="detail-item">
-                  <label>樹高:</label>
-                  <span>{tree.height}m</span>
+                  <label>番号:</label>
+                  <span>{tree.number}</span>
                 </div>
                 <div className="detail-item">
-                  <label>木の周囲:</label>
-                  <span>{tree.circumference}cm</span>
+                  <label>樹種名:</label>
+                  <span>{tree.species}</span>
                 </div>
-              </div>
-            )}
-          </div>
-
-          {/* 位置情報 - 折りたたみ可能 */}
-          <div className="collapsible-section">
-            <button 
-              className="section-toggle" 
-              onClick={() => toggleSection('location')}
-              aria-expanded={expandedSections.location}
-            >
-              <span className={`toggle-icon ${expandedSections.location ? 'expanded' : ''}`}>▶</span>
-              位置情報
-            </button>
-            {expandedSections.location && (
-              <div className="collapsible-content">
                 <div className="detail-item">
                   <label>立地:</label>
                   <span>{tree.location}</span>
                 </div>
                 <div className="detail-item">
-                  <label>緯度:</label>
-                  <span>{tree.latitude.toFixed(6)}</span>
+                  <label>木の周囲:</label>
+                  <span>{tree.circumference}cm</span>
                 </div>
                 <div className="detail-item">
-                  <label>経度:</label>
-                  <span>{tree.longitude.toFixed(6)}</span>
+                  <label>樹高:</label>
+                  <span>{tree.height}m</span>
                 </div>
-              </div>
-            )}
-          </div>
-
-          {/* 備考 - 折りたたみ可能 */}
-          <div className="collapsible-section">
-            <button 
-              className="section-toggle" 
-              onClick={() => toggleSection('notes')}
-              aria-expanded={expandedSections.notes}
-            >
-              <span className={`toggle-icon ${expandedSections.notes ? 'expanded' : ''}`}>▶</span>
-              備考
-            </button>
-            {expandedSections.notes && (
-              <div className="collapsible-content">
+                <div className="detail-item">
+                  <label>状態:</label>
+                  <span className={`condition-${tree.condition.replace(/[\s・]/g, '').toLowerCase()}`}>
+                    {tree.condition}
+                  </span>
+                </div>
                 <div className="detail-item">
                   <label>備考:</label>
                   <span>{tree.notes || '特になし'}</span>
@@ -162,6 +128,7 @@ const TimeSeriesTreeDetailPanel = ({ tree, isOpen, onClose }: TimeSeriesTreeDeta
               </div>
             )}
           </div>
+
         </div>
 
         {/* 管理履歴セクション */}
