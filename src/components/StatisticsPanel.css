@@ -390,11 +390,36 @@
 }
 
 /* Table Styles */
+.table-container {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
 .stats-table {
   overflow-x: auto;
   border-radius: 6px;
   border: 1px solid #eee;
   background: white;
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.stats-table::-webkit-scrollbar {
+  width: 8px;
+}
+
+.stats-table::-webkit-scrollbar-track {
+  background: var(--color-surface);
+  border-radius: 4px;
+}
+
+.stats-table::-webkit-scrollbar-thumb {
+  background: var(--color-main-soft);
+  border-radius: 4px;
+}
+
+.stats-table::-webkit-scrollbar-thumb:hover {
+  background: var(--color-main);
 }
 
 .stats-table table {
