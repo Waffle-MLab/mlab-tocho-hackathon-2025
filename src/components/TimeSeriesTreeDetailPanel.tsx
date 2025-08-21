@@ -10,7 +10,9 @@ interface TimeSeriesTreeDetailPanelProps {
 
 const TimeSeriesTreeDetailPanel = ({ tree, isOpen, onClose }: TimeSeriesTreeDetailPanelProps) => {
   const [expandedSections, setExpandedSections] = useState({
-    parkInfo: false
+    parkInfo: false,
+    tokyoParks: false,
+    sampleUniversity: false
   })
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
 
@@ -91,7 +93,7 @@ const TimeSeriesTreeDetailPanel = ({ tree, isOpen, onClose }: TimeSeriesTreeDeta
               aria-expanded={expandedSections.parkInfo}
             >
               <span className={`toggle-icon ${expandedSections.parkInfo ? 'expanded' : ''}`}>▶</span>
-              神代植物公園
+              神代植物公園管理部
             </button>
             {expandedSections.parkInfo && (
               <div className="collapsible-content">
@@ -125,86 +127,120 @@ const TimeSeriesTreeDetailPanel = ({ tree, isOpen, onClose }: TimeSeriesTreeDeta
                   <label>備考:</label>
                   <span>{tree.notes || '特になし'}</span>
                 </div>
+
+                {/* 管理履歴 - 神代植物公園グループ内 */}
+                <div className="management-history">
+                  <h4>管理履歴</h4>
+                  
+                  {/* 対応タイムライン */}
+                  <h5>作業記録</h5>
+                  <div className="timeline">
+                    {timelineData.map((item, index) => {
+                      const date = new Date(item.date)
+                      const formattedDate = `${date.getFullYear()}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')}`
+                      
+                      return (
+                        <div key={index} className="timeline-item">
+                          <div className="timeline-marker">
+                            <div className="timeline-dot"></div>
+                            <div className="timeline-date">{formattedDate}</div>
+                          </div>
+                          <div className="timeline-content">
+                            <div className="timeline-action">{item.action}</div>
+                            <div className="timeline-details">{item.details}</div>
+                            {item.photos && item.photos.length > 0 && (
+                              <div className="timeline-photos">
+                                {item.photos.map((photo, photoIndex) => (
+                                  <img 
+                                    key={photoIndex}
+                                    src={photo}
+                                    alt={`${item.action} - 写真 ${photoIndex + 1}`}
+                                    className="photo-thumbnail"
+                                    onClick={() => setSelectedImage(photo)}
+                                  />
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+
+                  {/* チャット履歴 */}
+                  <h5>担当者チャット</h5>
+                  <div className="chat-history">
+                    {chatHistory.map((chat, index) => (
+                      <div key={index} className="chat-item">
+                        <div className="chat-avatar">
+                          <div className="avatar-circle">{chat.user.charAt(0)}</div>
+                        </div>
+                        <div className="chat-content">
+                          <div className="chat-header">
+                            <span className="chat-user">{chat.user}</span>
+                            <span className="chat-time">{chat.time}</span>
+                          </div>
+                          <div className="chat-bubble">
+                            <p className="chat-message">{chat.message}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  {/* チャット入力 */}
+                  <div className="chat-input-container">
+                    <div className="chat-input-wrapper">
+                      <input 
+                        type="text" 
+                        className="chat-input" 
+                        placeholder="メッセージを入力..."
+                        disabled
+                      />
+                      <button className="chat-send-button" disabled>
+                        送信
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
             )}
           </div>
 
-        </div>
-
-        {/* 管理履歴セクション */}
-        <div className="detail-section">
-          <h3>管理履歴</h3>
-          
-          {/* 対応タイムライン */}
-          <h4>作業記録</h4>
-          <div className="timeline">
-            {timelineData.map((item, index) => {
-              const date = new Date(item.date)
-              const formattedDate = `${date.getFullYear()}/${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')}`
-              
-              return (
-                <div key={index} className="timeline-item">
-                  <div className="timeline-marker">
-                    <div className="timeline-dot"></div>
-                    <div className="timeline-date">{formattedDate}</div>
-                  </div>
-                  <div className="timeline-content">
-                    <div className="timeline-action">{item.action}</div>
-                    <div className="timeline-details">{item.details}</div>
-                    {item.photos && item.photos.length > 0 && (
-                      <div className="timeline-photos">
-                        {item.photos.map((photo, photoIndex) => (
-                          <img 
-                            key={photoIndex}
-                            src={photo}
-                            alt={`${item.action} - 写真 ${photoIndex + 1}`}
-                            className="photo-thumbnail"
-                            onClick={() => setSelectedImage(photo)}
-                          />
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )
-            })}
-          </div>
-
-          {/* チャット履歴 */}
-          <h4>担当者チャット</h4>
-          <div className="chat-history">
-            {chatHistory.map((chat, index) => (
-              <div key={index} className="chat-item">
-                <div className="chat-avatar">
-                  <div className="avatar-circle">{chat.user.charAt(0)}</div>
-                </div>
-                <div className="chat-content">
-                  <div className="chat-header">
-                    <span className="chat-user">{chat.user}</span>
-                    <span className="chat-time">{chat.time}</span>
-                  </div>
-                  <div className="chat-bubble">
-                    <p className="chat-message">{chat.message}</p>
-                  </div>
-                </div>
+          {/* 公益財団法人東京都公園協会 - 折りたたみ可能 */}
+          <div className="collapsible-section">
+            <button 
+              className="section-toggle" 
+              onClick={() => toggleSection('tokyoParks')}
+              aria-expanded={expandedSections.tokyoParks}
+            >
+              <span className={`toggle-icon ${expandedSections.tokyoParks ? 'expanded' : ''}`}>▶</span>
+              公益財団法人東京都公園協会
+            </button>
+            {expandedSections.tokyoParks && (
+              <div className="collapsible-content">
+                {/* 今後追加予定 */}
               </div>
-            ))}
+            )}
           </div>
-          
-          {/* チャット入力 */}
-          <div className="chat-input-container">
-            <div className="chat-input-wrapper">
-              <input 
-                type="text" 
-                className="chat-input" 
-                placeholder="メッセージを入力..."
-                disabled
-              />
-              <button className="chat-send-button" disabled>
-                送信
-              </button>
-            </div>
+
+          {/* サンプル大学調査委員会 - 折りたたみ可能 */}
+          <div className="collapsible-section">
+            <button 
+              className="section-toggle" 
+              onClick={() => toggleSection('sampleUniversity')}
+              aria-expanded={expandedSections.sampleUniversity}
+            >
+              <span className={`toggle-icon ${expandedSections.sampleUniversity ? 'expanded' : ''}`}>▶</span>
+              サンプル大学調査委員会
+            </button>
+            {expandedSections.sampleUniversity && (
+              <div className="collapsible-content">
+                {/* 今後追加予定 */}
+              </div>
+            )}
           </div>
+
         </div>
       </div>
       
