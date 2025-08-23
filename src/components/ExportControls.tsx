@@ -56,13 +56,13 @@ const ExportControls = ({ trees, clusters, selectedYear, viewportTrees, mapBound
         z-index: 1000;
         box-shadow: 0 2px 4px rgba(0,0,0,0.2);
       `
-      
-      const boundsInfo = mapBounds ? 
+
+      const boundsInfo = mapBounds ?
         `表示範囲: ${mapBounds.getNorth().toFixed(5)}, ${mapBounds.getWest().toFixed(5)} - ${mapBounds.getSouth().toFixed(5)}, ${mapBounds.getEast().toFixed(5)}` :
         '表示範囲情報なし'
-      
+
       infoOverlay.innerHTML = `
-        <div><strong>ナラ枯れ・マツ枯れ情報マップ ${selectedYear}年</strong></div>
+        <div><strong>植物感染症情報共有アプリをみんなで育てる！樹木データ ${selectedYear}年</strong></div>
         <div>${boundsInfo}</div>
         <div>樹木数: ${viewportTrees?.length || 0}本 | 出力日時: ${new Date().toLocaleString('ja-JP')}</div>
         <div style="margin-top: 4px; font-size: 10px; color: #666;">© OpenStreetMap contributors (https://www.openstreetmap.org/copyright)<br>ODbL (https://opendatacommons.org/licenses/odbl/) | CC-BY-SA (https://creativecommons.org/licenses/by-sa/2.0/)</div>
@@ -178,7 +178,7 @@ const ExportControls = ({ trees, clusters, selectedYear, viewportTrees, mapBound
         const points = []
         const steps = 32
         const radiusInDegrees = radiusInMeters / 111320 // 度に変換（簡易）
-        
+
         for (let i = 0; i <= steps; i++) {
           const angle = (i * 2 * Math.PI) / steps
           const lat = center[0] + radiusInDegrees * Math.cos(angle)
@@ -190,7 +190,7 @@ const ExportControls = ({ trees, clusters, selectedYear, viewportTrees, mapBound
 
       // 最初の円を基準にポリゴンを作成（簡易版）
       const firstCircle = cluster.circles[0]
-      const coordinates = firstCircle ? 
+      const coordinates = firstCircle ?
         circleToPolygon(firstCircle.center, firstCircle.radius) :
         [[[cluster.center[1], cluster.center[0]], [cluster.center[1], cluster.center[0]], [cluster.center[1], cluster.center[0]], [cluster.center[1], cluster.center[0]]]]
 
@@ -236,7 +236,7 @@ const ExportControls = ({ trees, clusters, selectedYear, viewportTrees, mapBound
           west: mapBounds.getWest()
         } : null,
         description: "Tree disease monitoring data with clusters",
-        source: "ナラ枯れ・マツ枯れ情報マップ"
+        source: "みんなで育てる！樹木データ"
       }
     }
 
@@ -255,7 +255,7 @@ const ExportControls = ({ trees, clusters, selectedYear, viewportTrees, mapBound
 
     // Points CSV for trees (Shapefile compatible)
     const pointsHeaders = [
-      'tree_id', 'number', 'year', 'species', 'location', 'circumference', 'height', 
+      'tree_id', 'number', 'year', 'species', 'location', 'circumference', 'height',
       'condition', 'notes', 'longitude', 'latitude'
     ]
 
@@ -285,13 +285,13 @@ const ExportControls = ({ trees, clusters, selectedYear, viewportTrees, mapBound
     const clustersRows = clusters.map(cluster => {
       const firstCircle = cluster.circles[0]
       let wktGeometry = 'POINT EMPTY'
-      
+
       if (firstCircle) {
         // WKT POLYGON for the cluster area
         const points = []
         const steps = 16
         const radiusInDegrees = firstCircle.radius / 111320
-        
+
         for (let i = 0; i <= steps; i++) {
           const angle = (i * 2 * Math.PI) / steps
           const lat = firstCircle.center[0] + radiusInDegrees * Math.cos(angle)
@@ -383,7 +383,7 @@ QGIS読み込み手順:
   const generateReport = () => {
     const totalTrees = trees.length
     const healthyTrees = trees.filter(tree => tree.condition === '健全').length
-    const problematicTrees = trees.filter(tree => 
+    const problematicTrees = trees.filter(tree =>
       tree.condition === '枯死' || tree.condition === '立ち枯れ' || tree.condition === '虫害'
     ).length
 
@@ -421,7 +421,7 @@ QGIS読み込み手順:
     }
 
     const reportText = `
-神代植物公園 樹木健康状態レポート - ${selectedYear}年
+みんなで育てる！樹木データ 樹木健康状態レポート - ${selectedYear}年
 ============================================
 
 生成日時: ${reportData.reportDate}
@@ -433,23 +433,23 @@ QGIS読み込み手順:
 
 ## 状態別内訳
 ${Object.entries(reportData.conditionBreakdown)
-  .map(([condition, count]) => `- ${condition}: ${count}本`)
-  .join('\n')}
+        .map(([condition, count]) => `- ${condition}: ${count}本`)
+        .join('\n')}
 
 ## 樹種別内訳
 ${Object.entries(reportData.speciesBreakdown)
-  .sort(([,a], [,b]) => b - a)
-  .slice(0, 10)
-  .map(([species, count]) => `- ${species}: ${count}本`)
-  .join('\n')}
+        .sort(([, a], [, b]) => b - a)
+        .slice(0, 10)
+        .map(([species, count]) => `- ${species}: ${count}本`)
+        .join('\n')}
 
 ## クラスター分析
 - 検出されたクラスター数: ${reportData.clusters.totalClusters}
 - 影響を受けた樹木数: ${reportData.clusters.affectedTrees}本
 
 ${reportData.clusters.clusterDetails
-  .map(cluster => `- クラスター${cluster.id}: ${cluster.treeCount}本 (${cluster.location})`)
-  .join('\n')}
+        .map(cluster => `- クラスター${cluster.id}: ${cluster.treeCount}本 (${cluster.location})`)
+        .join('\n')}
 `
 
     const blob = new Blob([reportText], { type: 'text/plain;charset=utf-8' })
@@ -471,7 +471,7 @@ ${reportData.clusters.clusterDetails
         <div className="control-content">
           <div className="export-section">
             <h4>画像出力</h4>
-            <button 
+            <button
               className="export-button image"
               onClick={exportViewportAsImage}
               disabled={isExporting}
@@ -483,14 +483,14 @@ ${reportData.clusters.clusterDetails
 
           <div className="export-section">
             <h4>GIS対応データ出力</h4>
-            <button 
+            <button
               className="export-button geojson"
               onClick={exportAsGeoJSON}
               disabled={trees.length === 0}
             >
               GeoJSON形式
             </button>
-            <button 
+            <button
               className="export-button shapefile"
               onClick={exportAsShapefile}
               disabled={trees.length === 0}
@@ -502,7 +502,7 @@ ${reportData.clusters.clusterDetails
 
           <div className="export-section">
             <h4>従来データ出力</h4>
-            <button 
+            <button
               className="export-button data"
               onClick={exportDataAsCSV}
               disabled={trees.length === 0}
@@ -514,12 +514,12 @@ ${reportData.clusters.clusterDetails
 
           <div className="export-section">
             <h4>レポート生成</h4>
-            <button 
+            <button
               className="export-button report"
               onClick={generateReport}
               disabled={trees.length === 0}
             >
-統計レポート (TXT)
+              統計レポート (TXT)
             </button>
             <p className="export-note">現在の統計情報を要約したレポートを生成します</p>
           </div>
