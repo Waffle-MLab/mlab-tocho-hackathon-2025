@@ -4,6 +4,7 @@ import ViewPage from './pages/ViewPage'
 import HogePage from './pages/HogePage'
 import RegisterPage from './pages/RegisterPage'
 import AddRecordPage from './pages/AddRecordPage'
+import SuginamiPage from './pages/SuginamiPage'
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/add-record" element={<AddRecordPage />} />
         <Route path="/hoge" element={<HogePage />} />
+        <Route path="/suginami" element={<SuginamiPage />} />
       </Routes>
     </Router>
   )

@@ -12,16 +12,16 @@ import TimeSeriesTreeMarkers from '../components/TimeSeriesTreeMarkers'
 import SVGClusterOverlay from '../components/SVGClusterOverlay'
 
 // === UI COMPONENTS ===
-import TimeSeriesTreeDetailPanel from '../components/TimeSeriesTreeDetailPanel'
+import SuginamiTreeDetailPanel from '../components/SuginamiTreeDetailPanel'
 
 // === STYLES & TYPES & UTILITIES ===
 import '../components/Map.css'
 import { TimeSeriesTreeMarkerData } from '../types/tree'
-import { loadTreeData } from '../utils/csvLoader'
+import { loadSuginamiTreeData } from '../utils/suginamiCsvLoader'
 import { clusterTrees, ClusterData } from '../utils/clustering'
 import L from 'leaflet'
 
-function ViewPage() {
+function SuginamiPage() {
   // ==========================================
   // STATE MANAGEMENT
   // ==========================================
@@ -56,14 +56,14 @@ function ViewPage() {
   // CONFIGURATION
   // ==========================================
 
-  /** 地図の初期設定 */
-  const mapConfig = { center: [35.6718, 139.5503] as [number, number], zoom: 16 }
+  /** 地図の初期設定 - 杉並区の中心部 */
+  const mapConfig = { center: [35.7081, 139.6427] as [number, number], zoom: 16 }
 
   useEffect(() => {
     const loadData = async () => {
       try {
         setLoading(true)
-        const timeSeriesData = await loadTreeData()
+        const timeSeriesData = await loadSuginamiTreeData()
         setTimeSeriesTrees(timeSeriesData)
 
         // Extract available years and sort them
@@ -76,8 +76,8 @@ function ViewPage() {
 
         setError(null)
       } catch (err) {
-        setError('データの読み込みに失敗しました')
-        console.error('Error loading tree data:', err)
+        setError('杉並区データの読み込みに失敗しました')
+        console.error('Error loading Suginami tree data:', err)
       } finally {
         setLoading(false)
       }
@@ -129,7 +129,6 @@ function ViewPage() {
     setFlyToLocation(null)
   }, [isPanelOpen, handlePanelClose])
 
-
   const handleYearChange = useCallback((year: number) => {
     setSelectedYear(year)
 
@@ -152,7 +151,6 @@ function ViewPage() {
     }
   }, [selectedTimeSeriesTree, isPanelOpen, timeSeriesTrees])
 
-
   // ビューポート変更ハンドラー
   const handleViewportChange = useCallback((bounds: L.LatLngBounds) => {
     setMapBounds(bounds)
@@ -170,8 +168,8 @@ function ViewPage() {
 
   return (
     <div className="App">
-      <Header title="みんなで育てる！樹木データ" />
-      {loading && <div className="status-message">データ読み込み中...</div>}
+      <Header title="みんなで育てる！樹木データ - デモ:杉並区都市整理部土木管理課オープンデータのプロット " />
+      {loading && <div className="status-message">杉並区データ読み込み中...</div>}
       {error && <div className="status-message error">{error}</div>}
       <main className="App-main">
         <Map
@@ -211,7 +209,7 @@ function ViewPage() {
           allTreesInViewport={useMemo(() => getTreesInViewport(advancedFilteredTrees.length > 0 ? advancedFilteredTrees : timeSeriesTrees), [getTreesInViewport, advancedFilteredTrees, timeSeriesTrees])}
         />
       </main>
-      <TimeSeriesTreeDetailPanel
+      <SuginamiTreeDetailPanel
         tree={selectedTimeSeriesTree}
         isOpen={isPanelOpen}
         onClose={handlePanelClose}
@@ -226,4 +224,4 @@ function ViewPage() {
   )
 }
 
-export default ViewPage
+export default SuginamiPage
